@@ -47,11 +47,6 @@ rule all:
         expand("data/plots/{sample}_plots.pdf", sample=SAMPLES)
 
 
-# only run basecalling when requested
-if config["basecall"]:
-    include: os.path.join(RULES_DIR, 'basecall.smk')
-
-
 # the snakemake files that run the different parts of the pipeline
 include: os.path.join(RULES_DIR, 'porechop.smk')
 include: os.path.join(RULES_DIR, 'align.smk')

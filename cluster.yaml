@@ -7,11 +7,6 @@ __default__:
     error     : "logs/cluster/{rule}.{wildcards}.e"
 
 
-basecall_albacore:
-    nCPUs     : 32
-    memory    : 20000
-    resources : "\"select[mem>20000] rusage[mem=20000] span[hosts=1]\""
-
 map_minimap2:
     nCPUs     : 16
     memory    : 16000
