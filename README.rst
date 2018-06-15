@@ -65,7 +65,6 @@ with by pulling them from Singularity Hub:
 .. code-block:: bash
 
     singularity pull --force --name nanoporeqc.simg shub://mbhall88/Singularity_recipes:nanoporeqc
-    singularity pull --force --name albacore.simg shub://mbhall88/Singularity_recipes:albacore
 
 Make sure to update the ``config.yaml`` with the paths to the containers if you
 pulled them down from Singularity Hub.
