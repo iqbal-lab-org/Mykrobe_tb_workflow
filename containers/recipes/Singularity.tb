@@ -1,5 +1,5 @@
 Bootstrap: debootstrap
-OSVersion: xenial
+OSVersion: bionic
 MirrorURL:  http://us.archive.ubuntu.com/ubuntu/
 
 %help
@@ -17,76 +17,16 @@ MirrorURL:  http://us.archive.ubuntu.com/ubuntu/
   PATH=/usr/local/bin:$PATH
 
 %post
-  # ================================
-  # INSTALL core dependencies
-  # ================================
-  apt-get update
-  apt-get install -y software-properties-common wget
-  apt-add-repository universe
-  apt-get update
-  apt-get install -y build-essential manpages-dev make zlib1g-dev checkinstall libssl-dev libbz2-dev git
-  export LC_ALL=C.UTF-8
-  export LANG=C.UTF-8
-  echo 'export LC_ALL=C.UTF-8' >> $SINGULARITY_ENVIRONMENT
-  echo 'export LANG=C.UTF-8' >> $SINGULARITY_ENVIRONMENT
+    apt update
+    apt install -y software-properties-common
+    apt-add-repository universe
+    apt update
+    apt install -y python3-pip git wget libncurses5-dev libbz2-dev liblzma-dev zlib1g-dev
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    echo 'export LC_ALL=C.UTF-8' >> $SINGULARITY_ENVIRONMENT
+    echo 'export LANG=C.UTF-8' >> $SINGULARITY_ENVIRONMENT
 
-  # ================================
-# ================================
-  # INSTALL python 3.6
-  # ================================
-  PY_VERSION=3.6.4
-  PY_URL=https://www.python.org/ftp/python/${PY_VERSION}/Python-${PY_VERSION}.tgz
-  cd /opt
-  wget "$PY_URL" -O - | tar -xzf -
-  cd Python-${PY_VERSION}
-  ./configure
-  make
-  make install
-  cd ~
-
-  # ================================
-  # INSTALL latest pistis release (v0.3.3)
-  # ================================
-  pip3 install pistis
-
-  # ================================
-  # INSTALL porechop
-  # ================================
-  PORECHOP_VERSION=0.2.3
-  PORECHOP_URL=https://github.com/rrwick/Porechop/archive/v${PORECHOP_VERSION}.tar.gz
-  apt-get install python3-setuptools python3-pkg-resources
-  wget "$PORECHOP_URL"
-  tar xzf v${PORECHOP_VERSION}.tar.gz
-  rm v${PORECHOP_VERSION}.tar.gz
-  cd Porechop-${PORECHOP_VERSION}
-  python3 setup.py install
-  cd ~
-
-  # ================================
-  # INSTALL minimap2
-  # ================================
-  MM2_VERSION=2.10
-  MM2_URL=https://github.com/lh3/minimap2/releases/download/v${MM2_VERSION}/minimap2-${MM2_VERSION}_x64-linux.tar.bz2
-  wget "$MM2_URL" -O - | tar -jxvf -
-  cp ./minimap2-${MM2_VERSION}_x64-linux/minimap2 /usr/local/bin
-
-  # ================================
-  # INSTALL samtools
-  # ================================
-  SAMTOOLS_VERSION=1.7
-  SAMTOOLS_URL=https://github.com/samtools/samtools/releases/download/${SAMTOOLS_VERSION}/samtools-${SAMTOOLS_VERSION}.tar.bz2
-  apt-get install -y libncurses5-dev libbz2-dev liblzma-dev
-  wget "$SAMTOOLS_URL" -O - | tar -jxvf -
-  cd samtools-${SAMTOOLS_VERSION}
-  ./configure
-  make
-  make install
-  cd ~
-
-# ================================
-  # INSTALL nanostats
-  # ================================
-  pip3 install nanostat
 
     # ========================
     # INSTALL Mykrobe
@@ -99,3 +39,45 @@ MirrorURL:  http://us.archive.ubuntu.com/ubuntu/
     rm -fr src/mykrobe/data
     mv mykrobe-data src/mykrobe/data
     pip3 install .
+
+    # ================================
+    # INSTALL pistis
+    # ================================
+    pip3 install pistis==0.3.3
+
+    # ================================
+    # INSTALL porechop
+    # ================================
+    PORECHOP_VERSION=0.2.3
+    PORECHOP_URL=https://github.com/rrwick/Porechop/archive/v${PORECHOP_VERSION}.tar.gz
+    wget "$PORECHOP_URL"
+    tar xzf v${PORECHOP_VERSION}.tar.gz
+    rm v${PORECHOP_VERSION}.tar.gz
+    cd Porechop-${PORECHOP_VERSION}
+    python3 setup.py install
+    cd ~
+
+    # ================================
+    # INSTALL minimap2
+    # ================================
+    MM2_VERSION=2.10
+    MM2_URL=https://github.com/lh3/minimap2/releases/download/v${MM2_VERSION}/minimap2-${MM2_VERSION}_x64-linux.tar.bz2
+    wget "$MM2_URL" -O - | tar -jxvf -
+    cp ./minimap2-${MM2_VERSION}_x64-linux/minimap2 /usr/local/bin
+
+    # ================================
+    # INSTALL samtools
+    # ================================
+    SAMTOOLS_VERSION=1.7
+    SAMTOOLS_URL=https://github.com/samtools/samtools/releases/download/${SAMTOOLS_VERSION}/samtools-${SAMTOOLS_VERSION}.tar.bz2
+    wget "$SAMTOOLS_URL" -O - | tar -jxvf -
+    cd samtools-${SAMTOOLS_VERSION}
+    ./configure
+    make
+    make install
+    cd ~
+
+    # ================================
+    # INSTALL nanostats
+    # ================================
+    pip3 install nanostat==1.1.0
