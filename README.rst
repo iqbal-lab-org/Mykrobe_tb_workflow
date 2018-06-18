@@ -34,6 +34,9 @@ Let's create our experiment directory and clone the pipeline.
 
     experiment=sample1
     git clone https://github.com/iqbal-lab-org/Mykrobe_tb_workflow.git "$experiment"
+    cd "$experiment"
+    project_dir=$(pwd)
+    mkdir -p ${project_dir}/logs
 
 This will download the pipeline repository into a directory named ``sample1``.
 
@@ -55,18 +58,31 @@ Snakemake_ is a workflow management system which coordinates the running of this
 pipeline. In order to install it you will need to make sure you have Python3_
 installed. It is best to manage all of this in a python virtual enviornment. In
 this repository there is a ``Pipfile`` which can be used to set up an
-environment in `pipenv`_. All you need to do is run:
+environment with `pipenv`_ very easily.
+
+To install ``pipenv``, just run:
 
 .. code-block:: bash
 
-    cd "$experiment"
-    project_dir=$(pwd)
-    mkdir -p ${project_dir}/logs/cluster
+    pip3 install --user pipenv
+
+Then all you need to do is run:
+
+.. code-block:: bash
+
+    cd "$project_dir"
     pipenv install
     pipenv shell
 
 This will install the required python packages ``snakemake`` and ``docutils``
 and activate the virtual environment.
+
+If you do not want to use a python virtual environment then run:
+
+.. code-block:: bash
+
+    cd "$experiment"
+    pip3 install snakemake docutils
 
 Setup
 ========================================
