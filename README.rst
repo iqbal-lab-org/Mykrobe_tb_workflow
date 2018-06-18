@@ -84,25 +84,44 @@ If you do not want to use a python virtual environment then run:
     cd "$experiment"
     pip3 install snakemake docutils
 
-Setup
+
+Analysis setup
 ========================================
 Getting Singularity containers
 --------------------------------
 .. image:: https://www.singularity-hub.org/static/img/hosted-singularity--hub-%23e32929.svg
   :target: https://singularity-hub.org/collections/1145
 
-I have added the paths to the appropriate Singularity containers on ``yoda`` into
-the ``config.yaml`` file so there is no need to worry about this.
+There are two ways of obtaining the Singularity container required for this
+pipeline:
 
-If you are wanting to run this somewhere else though you can get the containers
-with by pulling them from Singularity Hub:
+Download from Singularity Hub (recommended)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
 
-    singularity pull --force --name nanoporeqc.simg shub://mbhall88/Singularity_recipes:nanoporeqc
+    cd "$project_dir"
+    container_name=containers/tb.simg
+    singularity pull --force --name "$container_name" shub://iqbal-lab-org/Mykrobe_tb_workflow:tb
 
-Make sure to update the ``config.yaml`` with the paths to the containers if you
-pulled them down from Singularity Hub.
+
+Build container locally
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If for whatever reason you choose not to download the container, you can build
+it yourself using the included Singularity recipe file.
+
+.. code-block:: bash
+
+    cd "$project_dir"
+    container_name=containers/tb.simg
+    sudo singularity build "$container_name" containers/recipes/Singularity.tb
+
+If you are going to be running this pipline for many different samples on the
+same machine, it is recommended to only download/build the container once, as it is 
+about 1GB. Change ``container_name`` in the above code to a more central
+directory and make sure to update the container location in ``config.yaml`` (see
+below).
 
 Moving/copying reads into correct directory
 --------------------------------------------
