@@ -89,14 +89,15 @@ Analysis setup
 ========================================
 Getting Singularity containers
 --------------------------------
-.. image:: https://www.singularity-hub.org/static/img/hosted-singularity--hub-%23e32929.svg
-  :target: https://singularity-hub.org/collections/1145
 
 There are two ways of obtaining the Singularity container required for this
 pipeline:
 
 Download from Singularity Hub (recommended)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. image:: https://www.singularity-hub.org/static/img/hosted-singularity--hub-%23e32929.svg
+  :target: https://singularity-hub.org/collections/1145
 
 .. code-block:: bash
 
@@ -118,7 +119,7 @@ it yourself using the included Singularity recipe file.
     sudo singularity build "$container_name" containers/recipes/Singularity.tb
 
 If you are going to be running this pipline for many different samples on the
-same machine, it is recommended to only download/build the container once, as it is 
+same machine, it is recommended to only download/build the container once, as it is
 about 1GB. Change ``container_name`` in the above code to a more central
 directory and make sure to update the container location in ``config.yaml`` (see
 below).
