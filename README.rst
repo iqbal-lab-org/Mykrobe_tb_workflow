@@ -58,7 +58,7 @@ Getting Singularity containers
 --------------------------------
 .. image:: https://www.singularity-hub.org/static/img/hosted-singularity--hub-%23e32929.svg
   :target: https://singularity-hub.org/collections/1145
-  
+
 I have added the paths to the appropriate Singularity containers on ``yoda`` into
 the ``config.yaml`` file so there is no need to worry about this.
 
