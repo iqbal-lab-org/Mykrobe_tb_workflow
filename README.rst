@@ -56,6 +56,9 @@ Setup
 ========================================
 Getting Singularity containers
 --------------------------------
+.. image:: https://www.singularity-hub.org/static/img/hosted-singularity--hub-%23e32929.svg
+  :target: https://singularity-hub.org/collections/1145
+  
 I have added the paths to the appropriate Singularity containers on ``yoda`` into
 the ``config.yaml`` file so there is no need to worry about this.
 
@@ -175,9 +178,3 @@ the data should all be in the appropriate subdirectories in ``data/``.
 .. _`detailed instructions here`: http://singularity.lbl.gov/install-linux
 .. _Snakemake: https://snakemake.readthedocs.io/en/stable/index.html
 .. _Python3: https://www.python.org/downloads/source/
-
-
-[![https://www.singularity-hub.org/static/img/hosted-singularity--hub-%23e32929.svg](https://www.singularity-hub.org/static/img/hosted-singularity--hub-%23e32929.svg)](https://singularity-hub.org/collections/1145)
-
-.. image:: https://www.singularity-hub.org/static/img/hosted-singularity--hub-%23e32929.svg
-  :target: https://singularity-hub.org/collections/1145
