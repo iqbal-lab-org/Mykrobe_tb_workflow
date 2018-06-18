@@ -2,6 +2,11 @@
 Analysis pipeline for *M. tuberculosis* nanopore data
 ========================================
 
+.. contents:: Table of Contents
+
+Overview
+========================================
+
 This pipeline is designed to analyse Oxford Nanopore Technologies sequence data.
 
 The analysis run by the pipeline is:
@@ -17,7 +22,10 @@ Installation
 ========================================
 **Note: the following instructions assume you are working on a Linux operating system and have Python version 3.5 or greater.**
 
-The first thing to do is download this repository onto the machine you want to run the analysis on. In the spirit of making everything reproducible and tidy I would advice to download this repository (or copy the blank version) once for each nanopore experiment you want to analyse.
+The first thing to do is download this repository onto the machine you want to
+run the analysis on. In the spirit of making everything reproducible and tidy I
+would advise to download this repository once for each nanopore experiment you
+want to analyse.
 
 Let's create our experiment directory and clone the pipeline.
 
