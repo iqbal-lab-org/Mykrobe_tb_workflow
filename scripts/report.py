@@ -30,7 +30,7 @@ def mykrobe_overview(filepath: str) -> dict:
     :returns A dictionary of the susceptibility results.
 
     """
-    sample_id = os.path.basename(filepath).split('.')[0].split('_')[0]
+    sample_id = os.path.basename(filepath).split('.')[0].split('_predict')[0]
     with open(filepath, 'r') as mykrobe_json:
         data = json.load(mykrobe_json)
     return data[sample_id].get('susceptibility', {})
@@ -103,10 +103,10 @@ def load_json(filepath: str) -> dict:
     return data
 
 
-reference = os.path.splitext(os.path.basename(snakemake.config["tb_reference"]))[0]
+reference = os.path.splitext(os.path.basename(snakemake.config["reference"]))[0]
 mykrobe_report = mykrobe_rst_list(mykrobe_overview(snakemake.input.mykrobe))
-num_reads_pre_filter = get_num_reads(snakemake.input.stats_pre)
-num_reads_post_filter = get_num_reads(snakemake.input.stats_post)
+num_reads_pre_filter = get_num_reads(snakemake.input.stats_pre_filter)
+num_reads_post_filter = get_num_reads(snakemake.input.stats_post_filter)
 percent_reads_mapped = round(num_reads_post_filter / num_reads_pre_filter * 100, 2)
 sample=snakemake.params.sample
 
@@ -128,9 +128,9 @@ Report for {sample}
 
 Quality Control
 ===================================
-1. Porechop_ was run to trim adapter sequences from reads and discard reads with adapters found in the middle. More detailed information can be found in `porechop_log`_. For quality control plots of the reads after this step, see `plot_pre`_.
+1. Porechop_ was run to trim adapter sequences from reads and discard reads with adapters found in the middle. More detailed information can be found in `porechop_log`_. For quality control plots of the reads after this step, see `plot_pre_filter`_.
 2. Reads were aligned to the TB reference {reference} using Minimap2_.
-3. All reads which did not map to {reference} were removed. Prior to filtering there were {num_reads_pre_filter} reads. After filtering there remains {num_reads_post_filter}. This means {percent_reads_mapped}% of reads mapped to {reference}. For more stats on the pre-filtered reads see `stats_pre`_ and for post-filtered reads see `stats_post`_. For quality control plots of the reads after this step (and read percent identity to {reference}) see `plot_post`_. Stats were produced with NanoStat_ and plots with Pistis_.
+3. All reads which did not map to {reference} were removed. Prior to filtering there were {num_reads_pre_filter} reads. After filtering there remains {num_reads_post_filter}. This means {percent_reads_mapped}% of reads mapped to {reference}. For more stats on the pre-filtered reads see `stats_pre_filter`_ and for post-filtered reads see `stats_post_filter`_. For quality control plots of the reads after this step (and read percent identity to {reference}) see `plot_post_filter`_. Stats were produced with NanoStat_ and plots with Pistis_.
 
 Mykrobe Analysis
 ===================================

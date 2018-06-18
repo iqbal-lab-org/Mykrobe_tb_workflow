@@ -7,5 +7,5 @@ container=$(python3 -c "import os.path; print(os.path.abspath('$5'))")
 
 mkdir -p data/mykrobe/${barcode}
 cd data/mykrobe/${barcode}
-singularity exec ${container} mykrobe predict ${barcode} ${species} \
+mykrobe predict ${barcode} ${species} \
   --ont --seq ${input} --output ${output}

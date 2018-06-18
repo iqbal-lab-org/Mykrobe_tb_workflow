@@ -6,9 +6,13 @@ rule plot_pre_filtering:
     log:
         "logs/pistis_pre_filtering_{sample}.log"
     resources:
-        mem_mb=cluster_config["plot_pre"]["memory"]
+        mem_mb=cluster_config["plot_pre_filtering"]["memory"]
+    params:
+        downsample='--downsample 0'
+    singularity:
+        config["container"]
     shell:
-        "pistis --fastq {input} --output {output} 2> {log} "
+        "pistis --fastq {input} --output {output} {params.downsample} 2> {log} "
 
 
 rule plot_post_filtering:
@@ -20,9 +24,14 @@ rule plot_post_filtering:
     log:
         "logs/pistis_post_filtering_{sample}.log"
     resources:
-        mem_mb=cluster_config["plot_post"]["memory"]
+        mem_mb=cluster_config["plot_post_filtering"]["memory"]
+    params:
+        downsample='--downsample 0'
+    singularity:
+        config["container"]
     shell:
-        "pistis --fastq {input.fastq} --output {output} --bam {input.bam} 2> {log} "
+        "pistis --fastq {input.fastq} --output {output} --bam {input.bam} "
+        "{params.downsample} 2> {log} "
 
 
 rule stats_pre_filtering:
@@ -35,7 +44,9 @@ rule stats_pre_filtering:
     threads:
         cluster_config["stats_pre"]["nCPUs"]
     resources:
-        mem_mb=cluster_config["stats_pre"]["memory"]
+        mem_mb=cluster_config["stats_pre_filtering"]["memory"]
+    singularity:
+        config["container"]
     shell:
         "NanoStat --fastq {input} --name {output} --threads {threads} "
         "--readtype 1D 2> {log}"
@@ -50,7 +61,9 @@ rule stats_post_filtering:
     threads:
         cluster_config["stats_post"]["nCPUs"]
     resources:
-        mem_mb=cluster_config["stats_post"]["memory"]
+        mem_mb=cluster_config["stats_post_filtering"]["memory"]
+    singularity:
+        config["container"]
     shell:
         "NanoStat --fastq {input} --name {output} --threads {threads} "
         "--readtype 1D 2> {log}"
@@ -58,14 +71,14 @@ rule stats_post_filtering:
 
 rule report:
     input:
-        plot_pre="data/plots/{sample}_pre_filtering.pdf",
-        plot_post="data/plots/{sample}_post_filtering.pdf",
-        stats_pre="data/stats/{sample}_pre_filtering.txt",
-        stats_post="data/stats/{sample}_post_filtering.txt",
+        plot_pre_filter="data/plots/{sample}_pre_filtering.pdf",
+        plot_post_filter="data/plots/{sample}_post_filtering.pdf",
+        stats_pre_filter="data/stats/{sample}_pre_filtering.txt",
+        stats_post_filter="data/stats/{sample}_post_filtering.txt",
         mykrobe="data/mykrobe/{sample}/{sample}_predict.json",
         porechop_log="logs/porechop.log"
     output:
-        "report_{sample}.html"
+        "docs/report_{sample}.html"
     log:
         "logs/report_{sample}.log"
     params:

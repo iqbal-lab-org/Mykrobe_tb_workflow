@@ -26,6 +26,8 @@ rule porechop:
         unassigned=("--discard_unassigned" if MULTIPLEXED else "")
     log:
         "logs/porechop.log"
+    singularity:
+        config["container"]
     shell:
         "porechop --input {input}  {params.output_type} --threads {threads} "
         "--check_reads 25000 --extra_end_trim 10 --discard_middle "

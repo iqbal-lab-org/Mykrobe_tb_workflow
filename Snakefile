@@ -17,17 +17,6 @@ configfile: "config.yaml"
 with open('cluster.yaml', 'r') as fh:
     cluster_config = yaml.load(fh)
 
-singularity: config["container"]
-#======================================================
-# Global variables
-#======================================================
-RULES_DIR = 'rules'
-MULTIPLEXED = config["multiplexed"]
-if MULTIPLEXED:
-    SAMPLES = barcode_parser(config["barcodes"])
-else:
-    SAMPLES = [config["sample_name"]]
-
 
 #======================================================
 # Functions and Classes
@@ -45,6 +34,17 @@ def barcode_parser(barcodes_string: str) -> List[str]:
         if not (len(barcode) == 4 and re.match(regex, barcode)):
             raise InvalidBarcode(barcode + '\n' + msg)
     return barcodes
+    
+
+#======================================================
+# Global variables
+#======================================================
+RULES_DIR = 'rules'
+MULTIPLEXED = config["multiplexed"]
+if MULTIPLEXED:
+    SAMPLES = barcode_parser(config["barcodes"])
+else:
+    SAMPLES = [config["sample_name"]]
 
 
 #======================================================

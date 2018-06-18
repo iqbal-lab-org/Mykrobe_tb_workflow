@@ -8,6 +8,8 @@ rule mykrobe:
         container=config["container"]
     log:
         "logs/mykrobe_{sample}.log"
+    singularity:
+        config["container"]
     shell:
         "scripts/run_mykrobe.sh {wildcards.sample} {params.species} {input} "
         "{output} {params.container} 2> {log}"
