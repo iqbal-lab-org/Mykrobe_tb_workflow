@@ -40,7 +40,7 @@ rule stats_pre_filtering:
         "NanoStat --fastq {input} --name {output} --threads {threads} "
         "--readtype 1D 2> {log}"
 
-        rule stats_post_filtering:
+rule stats_post_filtering:
     input:
         "data/filtered/{sample}_filtered.fastq.gz"
     output:

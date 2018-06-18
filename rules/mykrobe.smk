@@ -5,7 +5,7 @@ rule mykrobe:
         "data/mykrobe/{sample}/{sample}_predict.json"
     params:
         species="tb",
-        container=config["containers"]["mykrobe"]
+        container=config["container"]
     log:
         "logs/mykrobe_{sample}.log"
     shell:
