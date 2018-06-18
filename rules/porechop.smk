@@ -17,8 +17,6 @@ rule porechop:
         INPUT
     output:
         expand("data/porechopped/{sample}.fastq.gz", sample=SAMPLES)
-    singularity:
-        config["containers"]["nanoporeqc"]
     threads:
         cluster_config["porechop"]["nCPUs"]
     resources:

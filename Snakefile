@@ -10,6 +10,15 @@ min_version("4.2.0")
 
 
 #======================================================
+# Config files
+#======================================================
+configfile: "config.yaml"
+
+with open('cluster.yaml', 'r') as fh:
+    cluster_config = yaml.load(fh)
+
+singularity: config["container"]
+#======================================================
 # Global variables
 #======================================================
 RULES_DIR = 'rules'
@@ -18,14 +27,6 @@ if MULTIPLEXED:
     SAMPLES = barcode_parser(config["barcodes"])
 else:
     SAMPLES = [config["sample_name"]]
-
-
-#======================================================
-# Config files
-#======================================================
-configfile: "config.yaml"
-with open('cluster.yaml', 'r') as fh:
-    cluster_config = yaml.load(fh)
 
 
 #======================================================
@@ -51,9 +52,7 @@ def barcode_parser(barcodes_string: str) -> List[str]:
 #======================================================
 rule all:
     input:
-        expand("data/sorted/{sample}_sorted.bam.bai", sample=SAMPLES),
-        expand("data/stats/{sample}_stats.txt", sample=SAMPLES),
-        expand("data/plots/{sample}_plots.pdf", sample=SAMPLES)
+        expand("report_{sample}.html", sample=SAMPLES)
 
 
 # the snakemake files that run the different parts of the pipeline

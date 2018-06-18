@@ -22,11 +22,20 @@ porechop:
     memory    : 16000
     resources : "\"select[mem>16000] rusage[mem=16000] span[hosts=1]\""
 
-stats:
+stats_pre:
     nCPUs     : 8
     memory    : 10000
     resources : "\"select[mem>10000] rusage[mem=10000] span[hosts=1]\""
 
-plot:
+plot_pre:
+    memory    : 10000
+    resources : "\"select[mem>10000] rusage[mem=10000] span[hosts=1]\""
+
+stats_post:
+    nCPUs     : 8
+    memory    : 10000
+    resources : "\"select[mem>10000] rusage[mem=10000] span[hosts=1]\""
+
+plot_post:
     memory    : 10000
     resources : "\"select[mem>10000] rusage[mem=10000] span[hosts=1]\""
