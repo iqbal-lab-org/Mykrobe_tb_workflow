@@ -55,7 +55,7 @@ Snakemake_ is a workflow management system which coordinates the running of this
 pipeline. In order to install it you will need to make sure you have Python3_
 installed. It is best to manage all of this in a python virtual enviornment. In
 this repository there is a ``Pipfile`` which can be used to set up an
-environment in ```pipenv``_`. All you need to do is run:
+environment in ``pipenv``_. All you need to do is run:
 
 .. code-block:: bash
 
