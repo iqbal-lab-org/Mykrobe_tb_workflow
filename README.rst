@@ -2,7 +2,7 @@
 Analysis pipeline for *M. tuberculosis* nanopore data
 ========================================
 
-.. contents:: Table of Contents
+.. contents::
 
 Overview
 ========================================
@@ -18,6 +18,7 @@ The analysis run by the pipeline is:
 
 .. image:: ./docs/imgs/dag.png
 
+
 Installation
 ========================================
 **Note: the following instructions assume you are working on a Linux operating system and have Python version 3.5 or greater.**
@@ -32,22 +33,29 @@ Let's create our experiment directory and clone the pipeline.
 .. code-block:: bash
 
     experiment=sample1
-    git clone https://github.com/mbhall88/basic_nanopore_pipeline.git "$experiment"
+    git clone https://github.com/iqbal-lab-org/Mykrobe_tb_workflow.git "$experiment"
 
-This will download the pipeline repository into a directory named, in this case, ``sample1``.
+This will download the pipeline repository into a directory named ``sample1``.
+
 
 Install Singularity
 ---------------------
-Singularity is installed on all head nodes of the cluster. If doing this on your
-local machine though and you don't have Singularity, you can find
-`detailed instructions here`_.
+Singularity containers can be used to package entire scientific workflows,
+software and libraries, and even data. This means that you don’t have to ask
+your cluster admin to install anything for you - you can put it in a Singularity
+container and run. A Singularity container with all the programs required to run
+this analysis is provided with the pipeline, but in order to use Singularity
+containers you need to have Singularity installed. If you don't have Singularity
+installed, you can find `detailed instructions here`_.
+
 
 Install Snakemake
 ---------------------
-Snakemake_ is a workflow management system which coordinates the running of this pipeline. In order to install it you will need to make sure you have Python3_ installed. It is best
-to manage all of this in a python virtual enviornment. In this repository there
-is a ``Pipfile`` which can be used to set up an enviornment in ``pipenv``. All you
-need to do is run:
+Snakemake_ is a workflow management system which coordinates the running of this
+pipeline. In order to install it you will need to make sure you have Python3_
+installed. It is best to manage all of this in a python virtual enviornment. In
+this repository there is a ``Pipfile`` which can be used to set up an
+environment in ```pipenv``_`. All you need to do is run:
 
 .. code-block:: bash
 
@@ -187,3 +195,4 @@ the data should all be in the appropriate subdirectories in ``data/``.
 .. _Snakemake: https://snakemake.readthedocs.io/en/stable/index.html
 .. _Python3: https://www.python.org/downloads/source/
 .. _NC_000962.3: https://www.ncbi.nlm.nih.gov/nuccore/NC_000962.3
+.. _pipenv: https://docs.pipenv.org/
