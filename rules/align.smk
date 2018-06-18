@@ -1,7 +1,7 @@
 rule map_minimap2:
     input:
-        config["reference"],
-        "data/porechopped/{sample}.fastq.gz"
+        ref=config["reference"],
+        query="data/porechopped/{sample}.fastq.gz"
 
     output:
         temp("data/mapped/{sample}.bam")
@@ -14,7 +14,7 @@ rule map_minimap2:
     singularity:
         config["containers"]["nanoporeqc"]
     shell:
-        "(minimap2 -t {threads} -ax map-ont {input} | "
+        "(minimap2 -t {threads} -ax map-ont {input.ref} {input.query} | "
         "samtools view -b - > {output}) 2> {log}"
 
 

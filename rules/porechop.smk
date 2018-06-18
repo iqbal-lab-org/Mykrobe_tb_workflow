@@ -1,5 +1,5 @@
 if MULTIPLEXED:
-    INPUT = "data/basecalled/workspace/pass"
+    INPUT = "data/basecalled/"
 else:
     INPUT = expand("data/basecalled/{sample}.fastq.gz", sample=SAMPLES)
 
