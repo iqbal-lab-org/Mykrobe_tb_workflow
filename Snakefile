@@ -34,7 +34,7 @@ def barcode_parser(barcodes_string: str) -> List[str]:
         if not (len(barcode) == 4 and re.match(regex, barcode)):
             raise InvalidBarcode(barcode + '\n' + msg)
     return barcodes
-    
+
 
 #======================================================
 # Global variables
@@ -52,7 +52,7 @@ else:
 #======================================================
 rule all:
     input:
-        expand("report_{sample}.html", sample=SAMPLES)
+        expand("docs/report_{sample}.html", sample=SAMPLES)
 
 
 # the snakemake files that run the different parts of the pipeline

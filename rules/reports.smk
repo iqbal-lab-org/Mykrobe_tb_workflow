@@ -42,7 +42,7 @@ rule stats_pre_filtering:
     log:
         "logs/nanostat_pre_filtering_{sample}.log"
     threads:
-        cluster_config["stats_pre"]["nCPUs"]
+        cluster_config["stats_pre_filtering"]["nCPUs"]
     resources:
         mem_mb=cluster_config["stats_pre_filtering"]["memory"]
     singularity:
@@ -59,7 +59,7 @@ rule stats_post_filtering:
     log:
         "logs/nanostat_post_filtering_{sample}.log"
     threads:
-        cluster_config["stats_post"]["nCPUs"]
+        cluster_config["stats_post_filtering"]["nCPUs"]
     resources:
         mem_mb=cluster_config["stats_post_filtering"]["memory"]
     singularity:
