@@ -1,15 +1,15 @@
 ========================================
-Analysis pipeline for nanopore data
+Analysis pipeline for *M. tuberculosis* nanopore data
 ========================================
-This pipeline is designed to analyse Oxford Nanopore Technologies sequence data
-on an LSF cluster (or local machine).
 
-To achieve this, the pipeline does the following:
+This pipeline is designed to analyse Oxford Nanopore Technologies sequence data.
 
-1. Basecalling of raw nanopore sequencing files using Albacore.
-2. Adapter trimming of the basecalled reads (and demultiplexing if required).
-3. Alignment to a given reference genome.
-4. Plots and statistics of the data after the above.
+The analysis run by the pipeline is:
+
+1. Adapter trimming of the basecalled reads (and demultiplexing if required).
+2. Alignment to a given reference genome (default is `NC_000962.3`_).
+3. Plots and statistics of the data after the above.
+4. A final HTML report summarising all results.
 
 .. image:: ./docs/imgs/dag.png
 
@@ -178,3 +178,4 @@ the data should all be in the appropriate subdirectories in ``data/``.
 .. _`detailed instructions here`: http://singularity.lbl.gov/install-linux
 .. _Snakemake: https://snakemake.readthedocs.io/en/stable/index.html
 .. _Python3: https://www.python.org/downloads/source/
+.. _NC_000962.3: https://www.ncbi.nlm.nih.gov/nuccore/NC_000962.3
