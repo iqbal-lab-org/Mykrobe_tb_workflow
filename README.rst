@@ -172,7 +172,7 @@ directories (in exampe below) to a directory in the experiment pipeline. If you
 did not select the barcoding option for basecalling, but the samples are
 barcoded, then do the following for the fastq files produced by the basecalling.
 **Note:** we generally only work with files in the "pass" directory (see
-explanation :ref:`above <non_barcoded_sample>`).
+explanation in `Non-barcoded sample`_ instructions).
 
 .. code-block:: bash
 
