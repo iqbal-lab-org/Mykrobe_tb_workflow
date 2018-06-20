@@ -8,7 +8,7 @@ Overview
 ========================================
 
 This pipeline is designed to analyse Oxford Nanopore Technologies sequence data.
-It was developed (and will continue to be improved) as part of a project to
+It was developed (and will continue to be improved/maintained) as part of a project to
 improve tuberculosis diagnostics using nanopore sequencing. The project is being
 run by a global group of researchers and clinicians from Madagascar’s National
 TB Program, Institute Pasteur Madagascar (IPM), University of Oxford, European
@@ -238,7 +238,7 @@ To run the pipeline on a local computer (i.e laptop or desktop)
 .. code-block:: bash
 
     cd ${project_dir}
-    snakemake --use-singularity --cluster-config cluster.yaml
+    snakemake --use-singularity
 
 This will provide a summary of all the jobs that are to be run, and when they
 have been started and finished.
