@@ -201,13 +201,14 @@ Open this file up in a text editor and change the following fields, if necessary
 
 Cluster configuration file
 ----------------------------
-This is the file ``cluster.yaml`` located in the pipeline root directory.
+This is the file ``cluster.yaml`` located in the pipeline root directory. It
+holds the settings for running the pipeline on a cluster, but also for the
+resource allocation for jobs. So even if you're running the pipeline on a local
+computer the resources from this file will be used.
 
-This file holds the parameters/resources that ``snakemake`` will allocate to
-each process within the pipeline. The fields are pretty self-explanatory so feel
-free to change them you see fit. The one section in this you **should** change
-is under ``__defaul__``:``name`` - name ``JOBNAME`` something useful, such as
-the current value of ``$experiment``.
+The fields are pretty self-explanatory so feel free to change them you see fit.
+The one section in this you **should** change is under ``__defaul__``:``name`` -
+name ``JOBNAME`` something useful, such as the current value of ``$experiment``.
 
 The cluster configuration provided is also used by snakemake if it is to be run
 on a cluster and is how it knows what resources to ask for for each job. This
@@ -220,31 +221,45 @@ Run
 ======
 You are all set up now. To run the pipeline simply execute the following:
 
+Local
+--------
+
+To run the pipeline on a local computer (i.e laptop or desktop)
+
 .. code-block:: bash
 
     cd ${project_dir}
-    CLUSTER_CMD='"bsub -n {cluster.nCPUs} -R {cluster.resources} -M {cluster.memory} -o {cluster.output} -e {cluster.error} -J {cluster.name}"'
-    bsub.py 1 logs/cluster/snakemake_master_process \
-      snakemake \
-        --use-singularity \
-        --cluster-config cluster.yaml \
-        --jobs 500 \
-        --cluster "$CLUSTER_CMD"
+    snakemake --use-singularity --cluster-config cluster.yaml
 
-Or if you don't have access to ``bsub.py``:
+This will provide a summary of all the jobs that are to be run, and when they
+have been started and finished.
+
+Cluster
+---------
+This pipeline can also be run on a cluster. These instructions are for running
+on an LSF cluster system. The ``cluster.yaml`` file *should* be general across
+clusters (except for the ``resources`` field). The cluster submission command
+however is different from cluster to cluster. We provide the command for an
+LSF system here. Please contact us if you use a different cluster system and
+cannot figure out the command and we will see if we can help. Additionally, if
+you use a different cluster management system and successfully run it, please
+provide the cluster submission commands and we will add them into these
+instructions for others to use.
+
+There is script provided in the scripts directory for submitting the job to an
+LSF cluster. To run this you just need to be in the pipeline root directory
+and provide a name for the job (to be used by the cluster).
 
 .. code-block:: bash
 
-    bsub -R "select[mem>1000] rusage[mem=1000]" -M1000 -o logs/cluster/snakemake_master_process.o -e logs/cluster/snakemake_master_process.e -J snakemake_master_process \
-      snakemake \
-        --use-singularity \
-        --cluster-config cluster.yaml \
-        --jobs 500 \
-        --cluster "$CLUSTER_CMD"
+    cd ${project_dir}
+    JOB_NAME=snakemake_master_process
+    bash scripts/submit_lsf.sh "$JOB_NAME"
 
-All the log files for the cluster jobs will be under ``logs/cluster`` and all
-the logs for the commands themselves will be in ``logs/``. When it has all run
-the data should all be in the appropriate subdirectories in ``data/``.
+All the log files for the cluster jobs will be prefixed with ``cluster_`` and all
+the logs themselves will be in ``logs/``. When it has all run the data will be
+in the appropriate subdirectories in ``data/`` and the final report(s) (one for
+each barcode) will be under ``docs/``.
 
 
 
