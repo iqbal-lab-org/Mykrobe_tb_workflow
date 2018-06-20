@@ -87,7 +87,7 @@ If you do not want to use a python virtual environment then run:
 
 Analysis setup
 ========================================
-Getting Singularity containers
+Singularity containers
 --------------------------------
 
 There are two ways of obtaining the Singularity container required for this
@@ -124,49 +124,66 @@ about 1GB. Change ``container_name`` in the above code to a more central
 directory and make sure to update the container location in ``config.yaml`` (see
 below).
 
-Moving/copying reads into correct directory
+Initial data location
 --------------------------------------------
-The pipeline expects that the data is placed in specific directories. Whilst this may seem a bit rigid, it is all in the name of reproducibility.
+The pipeline expects that the data you want to analyse is placed in specific
+directories. Whilst this may seem a bit rigid, it is all in the name of
+reproducibility.
 
-**Non-barcoded sample**
+.. _non_barcoded_sample:
 
-If you have already basecalled your reads then you will only need to merge the fastq files produced by the basecaller. To do this
+Non-barcoded sample
+^^^^^^^^^^^^^^^^^^^^^^
+
+For a single sample with no barcoding (and therefore no demultiplexing required)
+you just need to ensure there is a single fastq file of the basecalled reads.
+Generally, when a sample has been basecalled there is multiple fastq files (the
+default for Albacore for instance has 4000 reads per fastq). Additionally, these
+fastq files are normally split across two folders: "pass" and "fail". The
+assignment of reads into these folders is based on a Phred quality score threshold
+(at the time of writing this it is 7). It is recommended that you work with the
+reads in the "pass" folder. To combine the fastq files into a single file
 
 .. code-block:: bash
 
-    # make the directory we will move the merged file into
-    mkdir -p ${project_dir}/data/basecalled
+    # change into the pass directory where all the fastq files are
     cd /path/to/basecalled/fastq_files
-    cat *.fastq | gzip > ${project_dir}/data/basecalled/${experiment}.fastq.gz
+    cat *.fastq | gzip > ${experiment}.fastq.gz
+
+Once you have this single, combined fastq file, we need to move it into the
+appropriate pipeline data folder. **Note:** The combined file must have the
+same name as the variable ``experiment`` we set earlier. It must also be
+'gzip'ed.
+
+.. code-block:: bash
+
+    # make the directory we will move the combined file into
+    mkdir -p ${project_dir}/data/basecalled
+    mv /path/to/combined/fastq/${experiment}.fastq.gz ${project_dir}/data/basecalled/
     cd ${project_dir}
 
-This will combine all of the fastq files into a single, compressed file named according to the experiment name and move it into our basecalled data directory.
+Barcoded sample
+^^^^^^^^^^^^^^^^^^^^
 
-**Barcoded sample**
-
-If you are working with multiplexed samples (barcoded) then your directory that the basecalling was done into should contain subdirectories named after the barcode they were binned into by the basecaller. You will need to moved these directories (in exampe below) to a directory in the experiment pipeline. If you did not selected the barcoding option for basecalling, but the samples are barcoded, then do the following for the fastq files produced by the basecalling. Note: we only work with files in the "pass" directory (if there is one). Additionally, if you did not basecall the data with the demultiplexing option, then just place
+If you are working with multiplexed (barcoded) samples, then the directory that
+the basecalling was done into should contain subdirectories named after the
+barcode they were binned into by the basecaller. You will need to moved these
+directories (in exampe below) to a directory in the experiment pipeline. If you
+did not select the barcoding option for basecalling, but the samples are
+barcoded, then do the following for the fastq files produced by the basecalling.
+**Note:** we generally only work with files in the "pass" directory (see
+explanation :ref:`above <non_barcoded_sample>`).
 
 .. code-block:: bash
 
     # make the directory we will move the reads into
-    mkdir -p ${project_dir}/data/basecalled/workspace/pass
-    cd ${project_dir}/data/basecalled/workspace/pass
-    mv /path/to/dir/containing/barcode/dirs/* .
+    mkdir -p ${project_dir}/data/basecalled/
+    # change into dir containing barcode folders - normally workspace/pass/
+    cd /path/to/dir/containing/barcode/folders/
+    # use `cp -r` instead of `mv` if you want to copy the folders instead
+    find . -maxdepth 1 -type d -exec mv '{}' ${project_dir}/data/basecalled/ \;
     cd ${project_dir}
 
-**Basecalling required**
-
-If basecalling is required from the pipeline then you need to do two things. First, change the ``basecall`` field to ``true`` within the config file (see below). Second, move your fast5 files into the pipeline directory.
-
-.. code-block:: bash
-
-    # make the directory we will move the reads into
-    mkdir -p ${project_dir}/data/reads
-    cd ${project_dir}/data/reads
-    mv /path/to/dir/containing/fast5/files/* .
-    cd ${project_dir}
-
-If they are multiplexed then you must fill in the appropriate fields in the config file (see below).
 
 Config file - ``config.yaml``
 --------------
