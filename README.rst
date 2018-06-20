@@ -185,8 +185,8 @@ explanation in `Non-barcoded sample`_ instructions).
     cd ${project_dir}
 
 
-Config file
---------------
+Configuration file
+--------------------
 This is the file ``config.yaml`` located in the pipeline root directory.
 
 Open this file up in a text editor and change the following fields, if necessary:
@@ -197,18 +197,24 @@ Open this file up in a text editor and change the following fields, if necessary
 * **reference** - The genome you would like to align the reads to. This is set by to default to the reference provided with the pipeline - `NC_000962.3`_.
 * **flowcell** - The flowcell used (if known). Default is ``FLO-MIN106``
 * **kit** - The sequencing kit used (if known). Default is ``SQK-LSK108``
-* **container** - If you have downloaded/built the Singularity containers in a different location to the default (``containers/tb.simg``) then change the path for the container to the location you have it stored at.
+* **container** - If you have downloaded/built the Singularity container in a different location to the default (``containers/tb.simg``) then change the path for the container to the location you have it stored at.
 
-Cluster config file - ``cluster.yaml``
---------------------
-This file holds the parameters/resources that ``snakemake`` will submit the jobs for each
-rule with. The fields are pretty self-explanatory so feel free to change them as
-you see fit. The one section in this you **should** change is under ``__defaul__``:``name``
-you should name ``JOBNAME`` something useful, such as the current value of
-``$experiment``.
+Cluster configuration file
+----------------------------
+This is the file ``cluster.yaml`` located in the pipeline root directory.
 
-**Note:** if you change the memory parameter for a rule, ensure you also change the
-value in resources in the two places with that value.
+This file holds the parameters/resources that ``snakemake`` will allocate to
+each process within the pipeline. The fields are pretty self-explanatory so feel
+free to change them you see fit. The one section in this you **should** change
+is under ``__defaul__``:``name`` - name ``JOBNAME`` something useful, such as
+the current value of ``$experiment``.
+
+The cluster configuration provided is also used by snakemake if it is to be run
+on a cluster and is how it knows what resources to ask for for each job. This
+file has been tested successfully on the LSF cluster management system. For more
+information on using snakemake on other cluster management systems, `see the documentation`_.
+**Note:** if you change the memory parameter for a rule, ensure you also change
+the value in resources in the two places with that value.
 
 Run
 ======
@@ -250,3 +256,4 @@ the data should all be in the appropriate subdirectories in ``data/``.
 .. _NC_000962.3: https://www.ncbi.nlm.nih.gov/nuccore/NC_000962.3
 .. _pipenv: https://docs.pipenv.org/
 .. _`EXAMPLE REPORT`: https://rawgit.com/iqbal-lab-org/Mykrobe_tb_workflow/master/docs/example_report.html
+.. _`see the documentation`: https://snakemake.readthedocs.io/en/latest/snakefiles/configuration.html#cluster-configuration
