@@ -8,6 +8,12 @@ Overview
 ========================================
 
 This pipeline is designed to analyse Oxford Nanopore Technologies sequence data.
+It was developed (and will continue to be improved) as part of a project to
+improve tuberculosis diagnostics using nanopore sequencing. The project is being
+run by a global group of researchers and clinicians from Madagascar’s National
+TB Program, Institute Pasteur Madagascar (IPM), University of Oxford, European
+Bioinformatics Institute (EMBL-EBI) and Stony Brook University. More
+information and a short video of the project can be found `here`_.
 
 The analysis run by the pipeline is:
 
@@ -272,3 +278,4 @@ All the log files for the cluster jobs will be prefixed with ``cluster_``.
 .. _pipenv: https://docs.pipenv.org/
 .. _`EXAMPLE REPORT`: https://rawgit.com/iqbal-lab-org/Mykrobe_tb_workflow/master/docs/example_report.html
 .. _`see the documentation`: https://snakemake.readthedocs.io/en/latest/snakefiles/configuration.html#cluster-configuration
+.. _here: https://nanoporetech.com/about-us/news/public-health-teams-madagascar-pioneer-use-portable-real-time-dna-sequencing-fight
