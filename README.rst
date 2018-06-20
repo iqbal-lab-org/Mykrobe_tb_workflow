@@ -219,7 +219,10 @@ the value in resources in the two places with that value.
 
 Run
 ======
-You are all set up now. To run the pipeline simply execute the following:
+You are all set up now. To run the pipeline simply execute the following. At the
+end, all of the logs will be under ``logs/``. Data will be in the appropriate
+subdirectories in ``data/`` and the final report(s) (one for each barcode) will
+be under ``docs/``.
 
 Local
 --------
@@ -256,10 +259,7 @@ and provide a name for the job (to be used by the cluster).
     JOB_NAME=snakemake_master_process
     bash scripts/submit_lsf.sh "$JOB_NAME"
 
-All the log files for the cluster jobs will be prefixed with ``cluster_`` and all
-the logs themselves will be in ``logs/``. When it has all run the data will be
-in the appropriate subdirectories in ``data/`` and the final report(s) (one for
-each barcode) will be under ``docs/``.
+All the log files for the cluster jobs will be prefixed with ``cluster_``.
 
 
 
