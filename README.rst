@@ -185,19 +185,19 @@ explanation in `Non-barcoded sample`_ instructions).
     cd ${project_dir}
 
 
-Config file - ``config.yaml``
+Config file
 --------------
+This is the file ``config.yaml`` located in the pipeline root directory.
+
 Open this file up in a text editor and change the following fields, if necessary:
 
 * **multiplexed** - Default is ``false``. Change to ``true`` if sample is multiplexed. If set to ``true`` then you **MUST** enter information for ``barcodes`` as well (see below).
 * **sample_name** - If ``multiplexed`` is set to ``false`` then this is the name of your sample. **Note: this MUST be the value of** ``experiment`` **we defined at the start of the installation instructions**. If ``multiplexed`` is set to ``true`` then ignore this field.
-* **barcodes** - If ``multiplexed`` is set to ``true`` then this needs to be a **space-separated** string of the expected barcodes (the ones you used in the experiment). An example of barcodes 01-05 is provided. These **MUST** follow the same format of ``BC`` followed by 2 digits. If ``multiplexed`` is set to ``false`` then ignore this field.
-* **basecall** - Default is ``true``. Set to ``false`` if you have already basecalled the data.
-* **reference** - The genome you would like to align the reads to.
-* **flowcell** - The flowcell used (if known). Default is "FLO-MIN106"
-* **kit** - The sequencing kit used (if known). Default is "SQK-LSK108"
-* **containers** - If you have downloaded/built the Singularity containers elsewhere as you will be using them for multiple samples then change the paths for each container to the location you have them stored at. If running this on ``yoda`` though you shouldn't need to change
-this.
+* **barcodes** - If ``multiplexed`` is set to ``true`` then this needs to be a **space-separated** string of the expected barcodes (the ones you used in the experiment). An example of barcodes 01-05 is provided. These **MUST** follow the same format of ``BC`` followed by 2 digits (e.g ``"BC01 BC02 BC03"``). If ``multiplexed`` is set to ``false`` then ignore this field.
+* **reference** - The genome you would like to align the reads to. This is set by to default to the reference provided with the pipeline - `NC_000962.3`_.
+* **flowcell** - The flowcell used (if known). Default is ``FLO-MIN106``
+* **kit** - The sequencing kit used (if known). Default is ``SQK-LSK108``
+* **container** - If you have downloaded/built the Singularity containers in a different location to the default (``containers/tb.simg``) then change the path for the container to the location you have it stored at.
 
 Cluster config file - ``cluster.yaml``
 --------------------
