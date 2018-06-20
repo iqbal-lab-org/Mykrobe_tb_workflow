@@ -14,7 +14,7 @@ The analysis run by the pipeline is:
 1. Adapter trimming of the basecalled reads (and demultiplexing if required).
 2. Alignment to a given reference genome (default is `NC_000962.3`_).
 3. Plots and statistics of the data after the above.
-4. A final HTML report summarising all results.
+4. A final HTML report summarising all results. `EXAMPLE REPORT`_
 
 .. image:: ./docs/imgs/dag.png
 
@@ -249,3 +249,4 @@ the data should all be in the appropriate subdirectories in ``data/``.
 .. _Python3: https://www.python.org/downloads/source/
 .. _NC_000962.3: https://www.ncbi.nlm.nih.gov/nuccore/NC_000962.3
 .. _pipenv: https://docs.pipenv.org/
+.. _`EXAMPLE REPORT`: https://rawgit.com/iqbal-lab-org/Mykrobe_tb_workflow/master/docs/example_report.html
