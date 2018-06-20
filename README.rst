@@ -2,7 +2,7 @@
 Analysis pipeline for *M. tuberculosis* nanopore data
 ========================================
 
-.. contents::
+.. contents:: **Table of Contents**
 
 Overview
 ========================================
