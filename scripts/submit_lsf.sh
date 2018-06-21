@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-CLUSTER_CMD='"bsub -n {cluster.nCPUs} -R {cluster.resources} -M {cluster.memory} -o {cluster.output} -e {cluster.error} -J {cluster.name}"'
+CLUSTER_CMD="'"bsub -n {cluster.nCPUs} -R {cluster.resources} -M {cluster.memory} -o {cluster.output} -e {cluster.error} -J {cluster.name}"'"
 JOB_NAME="$1"
 
 bsub -R "select[mem>1000] rusage[mem=1000]" \
