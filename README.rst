@@ -79,6 +79,9 @@ Then all you need to do is run:
     cd "$project_dir"
     pipenv install
     pipenv shell
+    # sometimes environment variables get cleared after pipenv shell
+    project_dir=$(pwd)
+    experiment=$(basename $project_dir)
 
 This will install the required python packages ``snakemake`` and ``docutils``
 and activate the virtual environment.
