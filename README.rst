@@ -123,9 +123,9 @@ it yourself using the included Singularity recipe file.
 
 .. code-block:: bash
 
-    cd "$project_dir"
-    container_name=containers/tb.simg
-    sudo singularity build "$container_name" containers/recipes/Singularity.tb
+    cd "$project_dir"/containers
+    container_name=tb.simg
+    sudo singularity build "$container_name" recipes/Singularity.tb
 
 If you are going to be running this pipline for many different samples on the
 same machine, it is recommended to only download/build the container once, as it is
