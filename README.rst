@@ -12,7 +12,7 @@ It was developed (and will continue to be improved/maintained) as part of a proj
 improve tuberculosis diagnostics using nanopore sequencing. The project is being
 run by a global group of researchers and clinicians from Madagascar’s National
 TB Program, Institute Pasteur Madagascar (IPM), University of Oxford, European
-Bioinformatics Institute (EMBL-EBI) and Stony Brook University. More
+Bioinformatics Institute (EMBL-EBI), Stony Brook University, and Hospital for Tropical Diseases - Ho Chi Minh City. More
 information and a short video of the project can be found `here`_.
 
 The analysis run by the pipeline is:
