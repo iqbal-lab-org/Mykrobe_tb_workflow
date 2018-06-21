@@ -110,8 +110,8 @@ Download from Singularity Hub (recommended)
 
 .. code-block:: bash
 
-    cd "$project_dir"
-    container_name=containers/tb.simg
+    cd "$project_dir"/containers
+    container_name=tb.simg
     singularity pull --force --name "$container_name" shub://iqbal-lab-org/Mykrobe_tb_workflow:tb
 
 
