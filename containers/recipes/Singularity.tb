@@ -80,4 +80,4 @@ MirrorURL:  http://us.archive.ubuntu.com/ubuntu/
     # ================================
     # INSTALL nanostats
     # ================================
-    pip3 install nanostat==1.1.1
+    pip3 install nanostat==1.1.0
