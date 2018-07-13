@@ -3,9 +3,8 @@ OSVersion: bionic
 MirrorURL:  http://us.archive.ubuntu.com/ubuntu/
 
 %help
-  A container to hold quality control tools and their dependencies for analysing
-  nanopore data.
-  Run `singularity exec nanoporeqc.simg` followed by any of the following:
+  A container to hold all the tools required for running Mykrobe predict.
+  Run `singularity exec tb.simg` followed by any of the following:
     - pistis
     - porechop
     - mykrobe
