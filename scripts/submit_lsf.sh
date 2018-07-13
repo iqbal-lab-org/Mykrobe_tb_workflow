@@ -4,8 +4,8 @@ JOB_NAME="$1"
 
 bsub -R "select[mem>1000] rusage[mem=1000]" \
   -M 1000 \
-  -o logs/cluster_${JOB_NAME}.o \
-  -e logs/cluster_${JOB_NAME}.e \
+  -o logs/cluster_"$JOB_NAME".o \
+  -e logs/cluster_"$JOB_NAME".e \
   -J "$JOB_NAME" \
   snakemake --use-singularity \
     --cluster-config cluster.yaml \
