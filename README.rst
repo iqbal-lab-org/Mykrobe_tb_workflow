@@ -42,7 +42,7 @@ Let's create our experiment directory and clone the pipeline.
     git clone https://github.com/iqbal-lab-org/Mykrobe_tb_workflow.git "$experiment"
     cd "$experiment"
     project_dir=$(pwd)
-    mkdir -p ${project_dir}/logs
+    mkdir -p "$project_dir"/logs
 
 This will download the pipeline repository into a directory named ``sample1``.
 
@@ -157,7 +157,7 @@ reads in the "pass" folder. To combine the fastq files into a single file
 
     # change into the pass directory where all the fastq files are
     cd /path/to/basecalled/fastq_files
-    cat *.fastq | gzip > ${experiment}.fastq.gz
+    cat *.fastq | gzip > "$experiment".fastq.gz
 
 Once you have this single, combined fastq file, we need to move it into the
 appropriate pipeline data folder. **Note:** The combined file must have the
@@ -167,9 +167,9 @@ same name as the variable ``experiment`` we set earlier. It must also be
 .. code-block:: bash
 
     # make the directory we will move the combined file into
-    mkdir -p ${project_dir}/data/basecalled
-    mv /path/to/combined/fastq/${experiment}.fastq.gz ${project_dir}/data/basecalled/
-    cd ${project_dir}
+    mkdir -p "$project_dir"/data/basecalled
+    mv /path/to/combined/fastq/"$experiment".fastq.gz "$project_dir"/data/basecalled/
+    cd "$project_dir"
 
 Barcoded sample
 ^^^^^^^^^^^^^^^^^^^^
@@ -186,12 +186,12 @@ explanation in `Non-barcoded sample`_ instructions).
 .. code-block:: bash
 
     # make the directory we will move the reads into
-    mkdir -p ${project_dir}/data/basecalled/
+    mkdir -p "$project_dir"/data/basecalled/
     # change into dir containing barcode folders - normally workspace/pass/
     cd /path/to/dir/containing/barcode/folders/
     # use `cp -r` instead of `mv` if you want to copy the folders instead
-    find . -maxdepth 1 -type d -exec mv '{}' ${project_dir}/data/basecalled/ \;
-    cd ${project_dir}
+    find . -maxdepth 1 -type d -exec mv '{}' "$project_dir"/data/basecalled/ \;
+    cd "$project_dir"
 
 
 Configuration file
@@ -238,7 +238,7 @@ To run the pipeline on a local computer (i.e laptop or desktop)
 
 .. code-block:: bash
 
-    cd ${project_dir}
+    cd "$project_dir"
     snakemake --use-singularity
 
 This will provide a summary of all the jobs that are to be run, and when they
@@ -262,7 +262,7 @@ and provide a name for the job (to be used by the cluster).
 
 .. code-block:: bash
 
-    cd ${project_dir}
+    cd "$project_dir"
     JOB_NAME=snakemake_master_process
     bash scripts/submit_lsf.sh "$JOB_NAME"
 
