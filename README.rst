@@ -29,6 +29,19 @@ Installation
 ========================================
 **Note: the following instructions assume you are working on a Linux operating system and have Python version 3.5 or greater.**
 
+Install Singularity
+---------------------
+Singularity containers can be used to package entire scientific workflows,
+software and libraries, and even data. This means that you don’t have to ask
+your cluster admin to install anything for you - you can put it in a Singularity
+container and run. A Singularity container with all the programs required to run
+this analysis is provided with the pipeline, but in order to use Singularity
+containers you need to have Singularity installed. If you don't have Singularity
+installed, you can find `detailed instructions here`_.
+
+Download Pipeline
+-------------------
+
 The first thing to do is download this repository onto the machine you want to
 run the analysis on. In the spirit of making everything reproducible and tidy I
 would advise to download this repository once for each nanopore experiment you
@@ -45,18 +58,6 @@ Let's create our experiment directory and clone the pipeline.
     mkdir -p "$project_dir"/logs
 
 This will download the pipeline repository into a directory named ``sample1``.
-
-
-Install Singularity
----------------------
-Singularity containers can be used to package entire scientific workflows,
-software and libraries, and even data. This means that you don’t have to ask
-your cluster admin to install anything for you - you can put it in a Singularity
-container and run. A Singularity container with all the programs required to run
-this analysis is provided with the pipeline, but in order to use Singularity
-containers you need to have Singularity installed. If you don't have Singularity
-installed, you can find `detailed instructions here`_.
-
 
 Install Snakemake
 ---------------------
