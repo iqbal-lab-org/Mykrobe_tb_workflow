@@ -169,7 +169,7 @@ same name as the variable ``experiment`` we set earlier. It must also be
 
     # make the directory we will move the combined file into
     mkdir -p "$project_dir"/data/basecalled
-    mv /path/to/combined/fastq/"$experiment".fastq.gz "$project_dir"/data/basecalled/
+    mv "$experiment".fastq.gz "$project_dir"/data/basecalled/
     cd "$project_dir"
 
 Barcoded sample
