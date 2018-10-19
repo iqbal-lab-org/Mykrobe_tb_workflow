@@ -47,7 +47,7 @@ MirrorURL:  http://us.archive.ubuntu.com/ubuntu/
     # ================================
     # INSTALL porechop
     # ================================
-    PORECHOP_VERSION=0.2.3
+    PORECHOP_VERSION=0.2.4
     PORECHOP_URL=https://github.com/rrwick/Porechop/archive/v${PORECHOP_VERSION}.tar.gz
     wget "$PORECHOP_URL"
     tar xzf v${PORECHOP_VERSION}.tar.gz
