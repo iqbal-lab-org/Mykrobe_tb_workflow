@@ -8,7 +8,7 @@ rule plot_pre_filtering:
     resources:
         mem_mb=cluster_config["plot_pre_filtering"]["memory"]
     params:
-        downsample='--downsample 0'
+        downsample='--downsample ' + config["plot_downsampling"]
     singularity:
         config["container"]
     shell:
@@ -26,7 +26,7 @@ rule plot_post_filtering:
     resources:
         mem_mb=cluster_config["plot_post_filtering"]["memory"]
     params:
-        downsample='--downsample 0'
+        downsample='--downsample ' + config["plot_downsampling"]
     singularity:
         config["container"]
     shell:
