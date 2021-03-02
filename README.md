@@ -93,58 +93,49 @@ pip3 install --user pipenv
 
 Then all you need to do is run:
 
-```{.bash}
+```shell
 cd "$project_dir"
-pipenv install
-pipenv shell
-# sometimes environment variables get cleared after pipenv shell
+# create a virtual environment
+python3 -m venv .venv
+# activate the environment
+source .venv/bin/activate
+# install the necessary packages
+python3 -m pip install -r requirements.txt
+# sometimes environment variables get cleared after activating environments
 project_dir=$(pwd)
 experiment=$(basename $project_dir)
 ```
 
 This will install the required python packages `snakemake` and `docutils` and activate
-the virtual environment.
+the virtual environment. You will need to remember to activate and deactivate the
+environment each time
 
-If you do not want to use a python virtual environment then run:
-
-```{.bash}
-cd "$experiment"
-pip3 install snakemake docutils
+```shell
+# activate
+cd "$project_dir"
+source .venv/bin/activate
+# deactivate
+deactivate
 ```
 
 Analysis setup
 ==============
 
-Singularity containers
-----------------------
+Singularity container
+---------------------
 
-There are two ways of obtaining the Singularity container required for this pipeline:
+Download the container locally
 
-### Download from Singularity Hub (recommended)
-
-[![image](https://www.singularity-hub.org/static/img/hosted-singularity--hub-%23e32929.svg)](https://singularity-hub.org/collections/1145)
-
-```{.bash}
+```shell
 cd "$project_dir"/containers
 container_name=tb.simg
-singularity pull --force --name "$container_name" shub://iqbal-lab-org/Mykrobe_tb_workflow:tb
-```
-
-### Build container locally
-
-If for whatever reason you choose not to download the container, you can build it
-yourself using the included Singularity recipe file.
-
-```{.bash}
-cd "$project_dir"/containers
-container_name=tb.simg
-sudo singularity build "$container_name" recipes/Singularity.tb
+singularity pull --force --name "$container_name" "docker://quay.io/iqballab/mykrobe_tb_workflow:latest"
 ```
 
 If you are going to be running this pipline for many different samples on the same
 machine, it is recommended to only download/build the container once, as it is about
-1GB. Change `container_name` in the above code to a more central directory and make sure
-to update the container location in `config.yaml` (see below).
+1.5GB. Change `container_name` in the above code to a more central directory and make
+sure to update the container location in `config.yaml` (see below).
 
 Initial data location
 ---------------------
@@ -152,54 +143,43 @@ Initial data location
 The pipeline expects that the data you want to analyse is placed in specific
 directories. Whilst this may seem a bit rigid, it is all in the name of reproducibility.
 
-### Non-barcoded sample {#non_barcoded_sample}
-
+### Non-barcoded sample
 For a single sample with no barcoding (and therefore no demultiplexing required) you
 just need to ensure there is a single fastq file of the basecalled reads. Generally,
 when a sample has been basecalled there is multiple fastq files (the default for
-Albacore for instance has 4000 reads per fastq). Additionally, these fastq files are
-normally split across two folders: \"pass\" and \"fail\". The assignment of reads into
-these folders is based on a Phred quality score threshold (at the time of writing this
-it is 7). It is recommended that you work with the reads in the \"pass\" folder. To
-combine the fastq files into a single file
+instance has 4000 reads per fastq). To combine the fastq files into a single file
 
-```{.bash}
-# change into the pass directory where all the fastq files are
+```shell
+# change into the directory where all the fastq files are
 cd /path/to/basecalled/fastq_files
-cat *.fastq | gzip > "$experiment".fastq.gz
+cat *.fastq* | gzip > "$experiment".fastq.gz
 ```
 
 Once you have this single, combined fastq file, we need to move it into the appropriate
 pipeline data folder. **Note:** The combined file must have the same name as the
-variable `experiment` we set earlier. It must also be \'gzip\'ed.
+variable `experiment` we set earlier. It must also be `gzip`ed.
 
-```{.bash}
+```shell
 # make the directory we will move the combined file into
-mkdir -p "$project_dir"/data/basecalled
-mv "$experiment".fastq.gz "$project_dir"/data/basecalled/
+mkdir -p "$project_dir"/data
+mv "$experiment".fastq.gz "$project_dir"/data/
 cd "$project_dir"
 ```
 
 ### Barcoded sample
 
-If you are working with multiplexed (barcoded) samples, then the directory that the
-basecalling was done into should contain subdirectories named after the barcode they
-were binned into by the basecaller. You will need to moved these directories (in exampe
-below) to a directory in the experiment pipeline. If you did not select the barcoding
-option for basecalling, but the samples are barcoded, then do the following for the
-fastq files produced by the basecalling. **Note:** we generally only work with files in
-the \"pass\" directory (see explanation in [Non-barcoded sample](#non-barcoded-sample)
-instructions).
+If you are working with multiplexed (barcoded) samples, then you just need to move (or
+copy) the directory containing the basecalled data to the experiment directory
 
-```{.bash}
+```shell
 # make the directory we will move the reads into
-mkdir -p "$project_dir"/data/basecalled/
-# change into dir containing barcode folders - normally workspace/pass/
-cd /path/to/dir/containing/barcode/folders/
-# use `cp -r` instead of `mv` if you want to copy the folders instead
-find . -maxdepth 1 -type d -exec mv '{}' "$project_dir"/data/basecalled/ \;
+mkdir -p "$project_dir"/data/basecalled
+# use `cp -r` instead of `mv` if you want to copy the folder instead
+mv /path/to/basecalling/dir "$project_dir"/data/basecalled/
 cd "$project_dir"
 ```
+
+Copying the data will double the size of the data, so moving it is recommended.
 
 Configuration file
 ------------------
