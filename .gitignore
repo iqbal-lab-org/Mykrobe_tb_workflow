@@ -2,3 +2,5 @@ Pipfile.lock
 .DS_Store
 .snakemake
 .cache
+.idea
+.python-version
