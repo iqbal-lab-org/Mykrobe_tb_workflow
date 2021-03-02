@@ -65,7 +65,7 @@ download this repository once for each nanopore experiment you want to analyse.
 
 Let\'s create our experiment directory and clone the pipeline.
 
-```{.bash}
+```shell
 experiment=sample1
 git clone https://github.com/iqbal-lab-org/Mykrobe_tb_workflow.git "$experiment"
 cd "$experiment"
@@ -82,16 +82,8 @@ Install Snakemake
 management system which coordinates the running of this pipeline. In order to install it
 you will need to make sure you have [Python3](https://www.python.org/downloads/source/)
 installed. It is best to manage all of this in a python virtual enviornment. In this
-repository there is a `Pipfile` which can be used to set up an environment with
-[pipenv](https://docs.pipenv.org/) very easily.
-
-To install `pipenv`, just run:
-
-```{.bash}
-pip3 install --user pipenv
-```
-
-Then all you need to do is run:
+repository there is a `requirements.txt` file which can be used to set up a python
+environment very easily.
 
 ```shell
 cd "$project_dir"
@@ -106,7 +98,7 @@ project_dir=$(pwd)
 experiment=$(basename $project_dir)
 ```
 
-This will install the required python packages `snakemake` and `docutils` and activate
+This will install the required python package `snakemake` and activate
 the virtual environment. You will need to remember to activate and deactivate the
 environment each time
 
