@@ -1,15 +1,17 @@
 rule mykrobe:
     input:
-        "data/filtered/{sample}_filtered.fastq.gz"
+        reads=rules.bam_to_fastq.output.fastq,
     output:
-        "data/mykrobe/{sample}/{sample}_predict.json"
+        report="data/mykrobe/{sample}_predict.json",
+    shadow:
+        "shallow"
     params:
         species="tb",
-        container=config["container"]
+        extra="--ont --format json",
     log:
-        "logs/mykrobe_{sample}.log"
-    singularity:
-        config["container"]
+        "logs/mykrobe/{sample}.log",
     shell:
-        "scripts/run_mykrobe.sh {wildcards.sample} {params.species} {input} "
-        "{output} {params.container} 2> {log}"
+        """
+        mykrobe predict {params.extra} --seq {input.reads} --output {output.report} \
+          {wildcards.sample} {params.species} > {log} 2>&1
+        """

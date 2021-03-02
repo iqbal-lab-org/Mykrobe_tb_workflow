@@ -1,62 +1,59 @@
-rule map_minimap2:
+rule map:
     input:
         ref=config["reference"],
-        query="data/porechopped/{sample}.fastq.gz"
-
+        query="data/{sample}.fastq.gz",
     output:
-        temp("data/mapped/{sample}.bam")
-    threads:
-        cluster_config["map_minimap2"]["nCPUs"]
+        bam=temp("data/mapped/{sample}.bam"),
+    threads: 8
     resources:
-        mem_mb=cluster_config["map_minimap2"]["memory"]
+        mem_mb=int(16 * GB),
     log:
-        "logs/minimap2_{sample}.log"
-    singularity:
-        config["container"]
+        "logs/map/{sample}.log",
+    params:
+        extra="-aL -x map-ont",
     shell:
-        "(minimap2 -t {threads} -ax map-ont {input.ref} {input.query} | "
-        "samtools view -b - > {output}) 2> {log}"
+        """
+        (minimap2 -t {threads} {params.extra} {input.ref} {input.query} \
+        | samtools view -b - > {output.bam}) 2> {log}
+        """
 
 
-rule samtools_sort:
+rule sort:
     input:
-        "data/mapped/{sample}.bam"
+        bam=rules.map.output.bam,
     output:
-        "data/sorted/{sample}_sorted.bam"
-    threads:
-        cluster_config["samtools_sort"]["nCPUs"]
+        bam="data/sorted/{sample}.bam",
+    threads: 8
     resources:
-        mem_mb=cluster_config["samtools_sort"]["memory"]
+        mem_mb=int(10 * GB),
     log:
-        "logs/samtools_sort_{sample}.log"
-    singularity:
-        config["container"]
+        "logs/sort/{sample}.log",
+    params:
+        extra="-O BAM",
     shell:
-        "samtools sort -@ {threads} {input} 2> {log} > {output}"
+        "samtools sort {params.extra} -@ {threads} {input.bam} 2> {log} > {output.bam}"
 
 
-rule samtools_index:
+rule index:
     input:
-        "data/sorted/{sample}_sorted.bam"
+        bam=rules.sort.output.bam,
     output:
-        "data/sorted/{sample}_sorted.bam.bai"
+        idx="data/sorted/{sample}.bam.bai",
     log:
-        "logs/samtools_index_{sample}.log"
-    singularity:
-        config["container"]
+        "logs/index/{sample}.log",
     shell:
-        "samtools index -b {input} 2> {log}"
+        "samtools index -b {input.bam} 2> {log}"
 
 
 rule bam_to_fastq:
     input:
-        bam="data/sorted/{sample}_sorted.bam",
-        index="data/sorted/{sample}_sorted.bam.bai"
+        bam=rules.index.input.bam,
+        index=rules.index.output.idx,
     output:
-        "data/filtered/{sample}_filtered.fastq.gz"
+        fastq="data/filtered/{sample}.filtered.fastq.gz",
     log:
-        "logs/bam_to_fastq_{sample}.log"
-    singularity:
-        config["container"]
+        "logs/bam_to_fastq/{sample}.log",
+    params:
+        extra="-F 0x4",
     shell:
-        "(samtools fastq -F 0x4 {input.bam} | gzip > {output}) 2> {log}"
+        "(samtools fastq {params.extra} {input.bam} | gzip > {output.fastq}) 2> {log}"
