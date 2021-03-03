@@ -95,14 +95,8 @@ def get_species_string(d):
 
 
 def get_lineage_string(d):
-    s = []
-    depth = []
-    per_cov = []
-    for k, v in d.get("phylogenetics", {}).get("lineage", {}).items():
-        s.append(k)
-        depth.append(str(v.get("median_depth")))
-        per_cov.append(str(v.get("percent_coverage")))
-    return ";".join(s), ";".join(per_cov), ";".join(depth)
+    lineages = d.get("phylogenetics", {}).get("lineage", {}).get("lineage", [])
+    return ";".join(lineages)
 
 
 def get_num_reads(stats_file: str) -> int:
@@ -128,11 +122,10 @@ percent_reads_mapped = round(num_reads_post_filter / num_reads_pre_filter * 100,
 sample = snakemake.wildcards.sample
 
 mykrobe_data = load_json(snakemake.input.mykrobe)
-key = list(mykrobe_data.keys())[0]
-data = mykrobe_data[key]
+data = mykrobe_data[sample]
 phylo_group, _, __ = get_phylo_group_string(data)
 species, _, __ = get_species_string(data)
-lineage, _, __ = get_lineage_string(data)
+lineage = get_lineage_string(data)
 
 
 report(
