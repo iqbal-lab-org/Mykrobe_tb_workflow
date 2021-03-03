@@ -1,15 +1,15 @@
 rule plot_pre_filtering:
     input:
-        "data/porechopped/{sample}.fastq.gz"
+        "data/{sample}.fastq.gz",
     output:
-        "data/plots/{sample}_pre_filtering.pdf"
+        "data/plots/{sample}_pre_filtering.pdf",
     log:
-        "logs/pistis_pre_filtering_{sample}.log"
+        "logs/pistis_pre_filtering/{sample}.log",
     resources:
-        mem_mb=cluster_config["plot_pre_filtering"]["memory"]
+        mem_mb=int(10 * GB),
     params:
-        downsample = "--downsample {}".format(config["plot_downsampling"])
-    singularity:
+        downsample="--downsample {}".format(config["plot_downsampling"]),
+    container:
         config["container"]
     shell:
         "pistis --fastq {input} --output {output} {params.downsample} 2> {log} "
@@ -17,17 +17,17 @@ rule plot_pre_filtering:
 
 rule plot_post_filtering:
     input:
-        fastq="data/filtered/{sample}_filtered.fastq.gz",
-        bam="data/sorted/{sample}_sorted.bam"
+        fastq=rules.bam_to_fastq.output.fastq,
+        bam=rules.sort.output.bam,
     output:
-        "data/plots/{sample}_post_filtering.pdf"
+        "data/plots/{sample}_post_filtering.pdf",
     log:
-        "logs/pistis_post_filtering_{sample}.log"
+        "logs/pistis_post_filtering/{sample}.log",
     resources:
-        mem_mb=cluster_config["plot_post_filtering"]["memory"]
+        mem_mb=int(10 * GB),
     params:
-        downsample = "--downsample {}".format(config["plot_downsampling"])
-    singularity:
+        downsample="--downsample {}".format(config["plot_downsampling"]),
+    container:
         config["container"]
     shell:
         "pistis --fastq {input.fastq} --output {output} --bam {input.bam} "
@@ -36,33 +36,32 @@ rule plot_post_filtering:
 
 rule stats_pre_filtering:
     input:
-        "data/porechopped/{sample}.fastq.gz"
+        rules.plot_pre_filtering.input[0],
     output:
-        "data/stats/{sample}_pre_filtering.txt"
+        "data/stats/{sample}_pre_filtering.txt",
     log:
-        "logs/nanostat_pre_filtering_{sample}.log"
-    threads:
-        cluster_config["stats_pre_filtering"]["nCPUs"]
+        "logs/nanostat_pre_filtering/{sample}.log",
+    threads: 4
     resources:
-        mem_mb=cluster_config["stats_pre_filtering"]["memory"]
-    singularity:
+        mem_mb=int(10 * GB),
+    container:
         config["container"]
     shell:
         "NanoStat --fastq {input} --name {output} --threads {threads} "
         "--readtype 1D 2> {log}"
 
+
 rule stats_post_filtering:
     input:
-        "data/filtered/{sample}_filtered.fastq.gz"
+        rules.bam_to_fastq.output.fastq,
     output:
-        "data/stats/{sample}_post_filtering.txt"
+        "data/stats/{sample}_post_filtering.txt",
     log:
-        "logs/nanostat_post_filtering_{sample}.log"
-    threads:
-        cluster_config["stats_post_filtering"]["nCPUs"]
+        "logs/nanostat_post_filtering_{sample}.log",
+    threads: 4
     resources:
-        mem_mb=cluster_config["stats_post_filtering"]["memory"]
-    singularity:
+        mem_mb=int(10 * GB),
+    container:
         config["container"]
     shell:
         "NanoStat --fastq {input} --name {output} --threads {threads} "
@@ -71,17 +70,16 @@ rule stats_post_filtering:
 
 rule report:
     input:
-        plot_pre_filter="data/plots/{sample}_pre_filtering.pdf",
-        plot_post_filter="data/plots/{sample}_post_filtering.pdf",
-        stats_pre_filter="data/stats/{sample}_pre_filtering.txt",
-        stats_post_filter="data/stats/{sample}_post_filtering.txt",
-        mykrobe="data/mykrobe/{sample}/{sample}_predict.json",
-        porechop_log="logs/porechop.log"
+        plot_pre_filter=rules.plot_pre_filtering.output[0],
+        plot_post_filter=rules.plot_post_filtering.output[0],
+        stats_pre_filter=rules.stats_pre_filtering.output[0],
+        stats_post_filter=rules.stats_post_filtering.output[0],
+        mykrobe=rules.mykrobe.output.report,
     output:
-        "docs/report_{sample}.html"
+        "docs/report_{sample}.html",
     log:
-        "logs/report_{sample}.log"
-    params:
-        sample="{sample}"
+        "logs/report/{sample}.log",
+    container:
+        config["container"]
     script:
         "../scripts/report.py"
