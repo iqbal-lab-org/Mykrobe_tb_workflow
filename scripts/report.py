@@ -110,7 +110,7 @@ def get_num_reads(stats_file: str) -> int:
     with open(stats_file, "r") as stats:
         for line in stats:
             if "Number of reads:" in line:
-                num_reads = line.split()[-1]
+                num_reads = float(line.split()[-1].replace(",", ""))
     return int(num_reads)
 
 
