@@ -1,16 +1,22 @@
 # Analysis pipeline for *M. tuberculosis* nanopore data
 
-[TOC]: #
+[TOC levels=1-3]: #
 
 ## Table of Contents
-- [Install Singularity](#install-singularity)
-- [Download Pipeline](#download-pipeline)
-- [Install Snakemake](#install-snakemake)
-- [Singularity container](#singularity-container)
-- [Initial data location](#initial-data-location)
-  - [Non-barcoded sample](#non-barcoded-sample)
-  - [Barcoded sample](#barcoded-sample)
-- [Configuration file](#configuration-file)
+- [Analysis pipeline for *M. tuberculosis* nanopore data](#analysis-pipeline-for-m-tuberculosis-nanopore-data)
+- [Overview](#overview)
+- [Installation](#installation)
+  - [Install Singularity](#install-singularity)
+  - [Download Pipeline](#download-pipeline)
+  - [Install Snakemake](#install-snakemake)
+- [Analysis setup](#analysis-setup)
+  - [Singularity container](#singularity-container)
+  - [Initial data location](#initial-data-location)
+    - [Non-barcoded sample](#non-barcoded-sample)
+    - [Barcoded sample](#barcoded-sample)
+  - [Configuration file](#configuration-file)
+- [Run](#run)
+- [Results](#results)
 
 # Overview
 
