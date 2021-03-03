@@ -95,7 +95,10 @@ def get_species_string(d):
 
 
 def get_lineage_string(d):
-    lineages = d.get("phylogenetics", {}).get("lineage", {}).get("lineage", [])
+    lineages = [
+        s.replace("lineage", "")
+        for s in d.get("phylogenetics", {}).get("lineage", {}).get("lineage", [])
+    ]
     return ";".join(lineages)
 
 
