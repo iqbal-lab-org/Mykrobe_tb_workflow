@@ -18,3 +18,4 @@ RUN wget -O - "$GUPPY_URL" | tar xzf -
 
 ENV PATH="/guppy/ont-guppy-cpu/bin:${PATH}"
 
+
