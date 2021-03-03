@@ -11,3 +11,5 @@ data/plots
 data/sorted
 data/stats
 logs
+data/basecalled
+data/demux

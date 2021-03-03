@@ -79,5 +79,7 @@ rule report:
         "docs/report_{sample}.html",
     log:
         "logs/report/{sample}.log",
+    container:
+        config["container"]
     script:
         "../scripts/report.py"

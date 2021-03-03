@@ -3,7 +3,7 @@ rule demux:
         basecalled="data/basecalled",
     output:
         fastqs=directory("data/demux"),
-    threads: 4
+    threads: 8
     resources:
         mem_mb=int(8 * GB),
     params:
@@ -24,7 +24,7 @@ rule combine_barcode_fastqs:
     input:
         demux_dir=rules.demux.output.fastqs,
     output:
-        fastq=expand("data/{sample}.fastq.gz", sample=SAMPLES),
+        fastq="data/{sample}.fastq.gz",
     threads: 1
     resources:
         mem_mb=int(GB),
