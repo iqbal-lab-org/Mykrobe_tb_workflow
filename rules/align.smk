@@ -11,6 +11,8 @@ rule map:
         "logs/map/{sample}.log",
     params:
         extra="-aL -x map-ont",
+    container:
+        config["container"]
     shell:
         """
         (minimap2 -t {threads} {params.extra} {input.ref} {input.query} \
@@ -30,6 +32,8 @@ rule sort:
         "logs/sort/{sample}.log",
     params:
         extra="-O BAM",
+    container:
+        config["container"]
     shell:
         "samtools sort {params.extra} -@ {threads} {input.bam} 2> {log} > {output.bam}"
 
@@ -41,6 +45,8 @@ rule index:
         idx="data/sorted/{sample}.bam.bai",
     log:
         "logs/index/{sample}.log",
+    container:
+        config["container"]
     shell:
         "samtools index -b {input.bam} 2> {log}"
 
@@ -55,5 +61,7 @@ rule bam_to_fastq:
         "logs/bam_to_fastq/{sample}.log",
     params:
         extra="-F 0x4",
+    container:
+        config["container"]
     shell:
         "(samtools fastq {params.extra} {input.bam} | gzip > {output.fastq}) 2> {log}"

@@ -32,9 +32,6 @@ else:
 # ======================================================
 # Rules
 # ======================================================
-container: config["container"]
-
-
 rule all:
     input:
         expand("docs/report_{sample}.html", sample=SAMPLES),

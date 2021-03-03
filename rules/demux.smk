@@ -11,6 +11,8 @@ rule demux:
         kit=config["kit"],
     log:
         "logs/demux.log",
+    container:
+        config["container"]
     shell:
         """
         guppy_barcoder -i {input.basecalled} -s {output.fastqs} -t {threads} \
@@ -28,6 +30,8 @@ rule combine_barcode_fastqs:
         mem_mb=int(GB),
     params:
         barcode_dir=infer_barcode_dir,
+    container:
+        config["container"]
     log:
         "logs/combine_barcode_fastqs/{sample}.log",
     shell:

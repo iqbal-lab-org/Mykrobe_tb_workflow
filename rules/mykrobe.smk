@@ -10,6 +10,8 @@ rule mykrobe:
         extra="--ont --format json",
     log:
         "logs/mykrobe/{sample}.log",
+    container:
+        config["container"]
     shell:
         """
         mykrobe predict {params.extra} --seq {input.reads} --output {output.report} \

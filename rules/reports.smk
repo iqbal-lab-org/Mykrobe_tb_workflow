@@ -9,6 +9,8 @@ rule plot_pre_filtering:
         mem_mb=int(10 * GB),
     params:
         downsample="--downsample {}".format(config["plot_downsampling"]),
+    container:
+        config["container"]
     shell:
         "pistis --fastq {input} --output {output} {params.downsample} 2> {log} "
 
@@ -25,6 +27,8 @@ rule plot_post_filtering:
         mem_mb=int(10 * GB),
     params:
         downsample="--downsample {}".format(config["plot_downsampling"]),
+    container:
+        config["container"]
     shell:
         "pistis --fastq {input.fastq} --output {output} --bam {input.bam} "
         "{params.downsample} 2> {log} "
@@ -40,6 +44,8 @@ rule stats_pre_filtering:
     threads: 4
     resources:
         mem_mb=int(10 * GB),
+    container:
+        config["container"]
     shell:
         "NanoStat --fastq {input} --name {output} --threads {threads} "
         "--readtype 1D 2> {log}"
@@ -55,6 +61,8 @@ rule stats_post_filtering:
     threads: 4
     resources:
         mem_mb=int(10 * GB),
+    container:
+        config["container"]
     shell:
         "NanoStat --fastq {input} --name {output} --threads {threads} "
         "--readtype 1D 2> {log}"
