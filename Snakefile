@@ -3,7 +3,7 @@ from snakemake.utils import min_version
 
 
 # Snakemake version when Singularity support was added
-min_version("6.0.0")
+min_version("5.0.0")
 
 
 # ======================================================
@@ -20,7 +20,7 @@ IS_MULTIPLEXED = config["multiplexed"]
 GB = 1024
 
 
-include: RULES_DIR / "common.smk"
+include: str(RULES_DIR / "common.smk")
 
 
 if IS_MULTIPLEXED:
@@ -40,9 +40,9 @@ rule all:
 # the snakemake files that run the different parts of the pipeline
 if IS_MULTIPLEXED:
 
-    include: RULES_DIR / "demux.smk"
+    include: str(RULES_DIR / "demux.smk")
 
 
-include: RULES_DIR / "align.smk"
-include: RULES_DIR / "mykrobe.smk"
-include: RULES_DIR / "reports.smk"
+include: str(RULES_DIR / "align.smk")
+include: str(RULES_DIR / "mykrobe.smk")
+include: str(RULES_DIR / "reports.smk")

@@ -5,3 +5,9 @@ Pipfile.lock
 .idea
 .python-version
 .venv
+data/filtered
+data/mykrobe
+data/plots
+data/sorted
+data/stats
+logs
