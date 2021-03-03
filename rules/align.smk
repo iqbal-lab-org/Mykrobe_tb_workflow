@@ -10,7 +10,7 @@ rule map:
     log:
         "logs/map/{sample}.log",
     params:
-        extra="-aL -x map-ont",
+        extra="-aL -x map-ont --secondary=no",
     container:
         config["container"]
     shell:
@@ -60,7 +60,7 @@ rule bam_to_fastq:
     log:
         "logs/bam_to_fastq/{sample}.log",
     params:
-        extra="-F 0x4",
+        extra="-F 2308",
     container:
         config["container"]
     shell:
