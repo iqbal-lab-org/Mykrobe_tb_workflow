@@ -6,16 +6,11 @@
 - [Install Singularity](#install-singularity)
 - [Download Pipeline](#download-pipeline)
 - [Install Snakemake](#install-snakemake)
-- [Singularity containers](#singularity-containers)
-  - [Download from Singularity Hub (recommended)](#download-from-singularity-hub-recommended)
-  - [Build container locally](#build-container-locally)
+- [Singularity container](#singularity-container)
 - [Initial data location](#initial-data-location)
-  - [Non-barcoded sample {#non_barcoded_sample}](#non-barcoded-sample-non_barcoded_sample)
+  - [Non-barcoded sample](#non-barcoded-sample)
   - [Barcoded sample](#barcoded-sample)
 - [Configuration file](#configuration-file)
-- [Cluster configuration file](#cluster-configuration-file)
-- [Local](#local)
-- [Cluster](#cluster)
 
 # Overview
 
@@ -54,7 +49,7 @@ install anything for you - you can put it in a Singularity container and run. A
 Singularity container with all the programs required to run this analysis is provided
 with the pipeline, but in order to use Singularity containers you need to have
 Singularity installed. If you don\'t have Singularity installed, you can find
-[detailed instructions here](http://singularity.lbl.gov/install-linux).
+[detailed instructions here](https://sylabs.io/guides/3.7/user-guide/quick_start.html#quick-installation-steps).
 
 Download Pipeline
 -----------------
@@ -98,9 +93,9 @@ project_dir=$(pwd)
 experiment=$(basename $project_dir)
 ```
 
-This will install the required python package `snakemake` and activate
-the virtual environment. You will need to remember to activate and deactivate the
-environment each time
+This will install the required python package `snakemake` and activate the virtual
+environment. You will need to remember to activate and deactivate the environment each
+time
 
 ```shell
 # activate
@@ -121,7 +116,7 @@ Download the container locally
 ```shell
 cd "$project_dir"/containers
 container_name=tb.simg
-singularity pull --force --name "$container_name" "docker://quay.io/iqballab/mykrobe_tb_workflow:latest"
+singularity pull --force --name "$container_name" "docker://quay.io/iqballab/mykrobe_tb_workflow"
 ```
 
 If you are going to be running this pipline for many different samples on the same
@@ -136,6 +131,7 @@ The pipeline expects that the data you want to analyse is placed in specific
 directories. Whilst this may seem a bit rigid, it is all in the name of reproducibility.
 
 ### Non-barcoded sample
+
 For a single sample with no barcoding (and therefore no demultiplexing required) you
 just need to ensure there is a single fastq file of the basecalled reads. Generally,
 when a sample has been basecalled there is multiple fastq files (the default for
@@ -144,7 +140,8 @@ instance has 4000 reads per fastq). To combine the fastq files into a single fil
 ```shell
 # change into the directory where all the fastq files are
 cd /path/to/basecalled/fastq_files
-cat *.fastq* | gzip > "$experiment".fastq.gz
+outfile="$experiment".fastq.gz
+for f in *.fastq*;do;if [ ${f##*.} = "gz" ]; then;cat $f >> "$outfile"";else;cat $f | gzip >> "$outfile";fi;done
 ```
 
 Once you have this single, combined fastq file, we need to move it into the appropriate
@@ -197,26 +194,11 @@ Open this file up in a text editor and change the following fields, if necessary
 - **container** - If you have downloaded/built the Singularity container in a different
   location to the default (`containers/tb.simg`) then change the path for the container
   to the location you have it stored at.
-
-Cluster configuration file
---------------------------
-
-This is the file `cluster.yaml` located in the pipeline root directory. It holds the
-settings for running the pipeline on a cluster, but also for the resource allocation for
-jobs. So even if you\'re running the pipeline on a local computer the resources from
-this file will be used.
-
-The fields are pretty self-explanatory so feel free to change them you see fit. The one
-section in this you **should** change is under `__defaul__`:`name` -name `JOBNAME`
-something useful, such as the current value of `$experiment`.
-
-The cluster configuration provided is also used by snakemake if it is to be run on a
-cluster and is how it knows what resources to ask for for each job. This file has been
-tested successfully on the LSF cluster management system. For more information on using
-snakemake on other cluster management systems, [see the
-documentation](https://snakemake.readthedocs.io/en/latest/snakefiles/configuration.html#cluster-configuration).
-**Note:** if you change the memory parameter for a rule, ensure you also change the
-value in resources in the two places with that value.
+- **kit** - If `multiplexed` is set to `true` then this needs to be the same as the
+  barcode kit used for the multiplexing. A list of available option is listed above this
+  field. If multiple barcoding kits were used, then a space-separated list of kits must
+  be provided (an example is provided above this field). If the sample is not
+  multiplexed then you can leave this field as is.
 
 Run
 ===
@@ -225,40 +207,18 @@ You are all set up now. To run the pipeline simply execute the following. At the
 all of the logs will be under `logs/`. Data will be in the appropriate subdirectories in
 `data/` and the final report(s) (one for each barcode) will be under `docs/`.
 
-Local
------
-
 To run the pipeline on a local computer (i.e laptop or desktop)
 
-```{.bash}
+```shell
 cd "$project_dir"
-snakemake --use-singularity
+snakemake --use-singularity --cores 8
 ```
 
 This will provide a summary of all the jobs that are to be run, and when they have been
 started and finished.
 
-Cluster
--------
+# Results
 
-This pipeline can also be run on a cluster. These instructions are for running on an LSF
-cluster system. The `cluster.yaml` file *should* be general across clusters (except for
-the `resources` field). The cluster submission command however is different from cluster
-to cluster. We provide the command for an LSF system here. Please contact us if you use
-a different cluster system and cannot figure out the command and we will see if we can
-help. Additionally, if you use a different cluster management system and successfully
-run it, please provide the cluster submission commands and we will add them into these
-instructions for others to use.
-
-There is script provided in the scripts directory for submitting the job to an LSF
-cluster. To run this you just need to be in the pipeline root directory and provide a
-name for the job (to be used by the cluster).
-
-```{.bash}
-cd "$project_dir"
-JOB_NAME=snakemake_master_process
-bash scripts/submit_lsf.sh "$JOB_NAME"
-```
-
-All the log files for the cluster jobs will be prefixed with `cluster_`.
+You can find the final HTML report(s) in the `docs/` directory. All intermediate finals
+are located in the relevant directories in `data/`.
 
