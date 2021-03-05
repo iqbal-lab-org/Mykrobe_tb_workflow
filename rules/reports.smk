@@ -5,6 +5,7 @@ rule plot_pre_filtering:
         "data/plots/{sample}_pre_filtering.pdf",
     log:
         "logs/pistis_pre_filtering/{sample}.log",
+    threads: 8
     resources:
         mem_mb=int(10 * GB),
     params:
@@ -23,6 +24,7 @@ rule plot_post_filtering:
         "data/plots/{sample}_post_filtering.pdf",
     log:
         "logs/pistis_post_filtering/{sample}.log",
+    threads: 8
     resources:
         mem_mb=int(10 * GB),
     params:

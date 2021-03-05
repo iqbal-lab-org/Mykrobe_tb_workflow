@@ -1,1 +1,2 @@
+wheel
 snakemake<5.18.0
