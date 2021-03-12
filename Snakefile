@@ -43,6 +43,7 @@ if IS_MULTIPLEXED:
     include: str(RULES_DIR / "demux.smk")
 
 
+include: str(RULES_DIR / "subsample.smk")
 include: str(RULES_DIR / "align.smk")
 include: str(RULES_DIR / "mykrobe.smk")
 include: str(RULES_DIR / "reports.smk")
