@@ -2,7 +2,7 @@ rule subsample:
     input:
         reads="data/{sample}.fastq.gz",
     output:
-        reads="data/{sample}.subsampled.fastq.gz",
+        reads="data/{sample}.subsampled.fq.gz",
     threads: 1
     params:
         options="",
