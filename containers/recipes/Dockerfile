@@ -1,7 +1,9 @@
 FROM ubuntu:20.04
 
 RUN apt update \
-    && apt install -y wget make gcc libncurses5-dev zlib1g-dev libbz2-dev liblzma-dev python3-dev python3-pip git
+    && apt install -y wget make gcc libncurses5-dev zlib1g-dev libbz2-dev liblzma-dev python3-dev python3-pip git \
+    && ln -s $(which python3) /usr/bin/python \
+    && ln -s $(which pip3) /usr/bin/pip
 
 ARG GUPPY_VERSION="4.4.2"
 ARG GUPPY_URL="https://mirror.oxfordnanoportal.com/software/analysis/ont-guppy-cpu_${GUPPY_VERSION}_linux64.tar.gz"
