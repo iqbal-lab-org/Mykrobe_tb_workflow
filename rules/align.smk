@@ -1,7 +1,7 @@
 rule map:
     input:
         ref=config["reference"],
-        query="data/{sample}.fastq.gz",
+        query=rules.subsample.output.reads,
     output:
         bam=temp("data/mapped/{sample}.bam"),
     threads: 8

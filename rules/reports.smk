@@ -1,6 +1,6 @@
 rule plot_pre_filtering:
     input:
-        "data/{sample}.fastq.gz",
+        rules.subsample.output.reads,
     output:
         "data/plots/{sample}_pre_filtering.pdf",
     log:
