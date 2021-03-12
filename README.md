@@ -205,6 +205,9 @@ Open this file up in a text editor and change the following fields, if necessary
   field. If multiple barcoding kits were used, then a space-separated list of kits must
   be provided (an example is provided above this field). If the sample is not
   multiplexed then you can leave this field as is.
+- **max_covg** - If a sample has coverage higher than this amount, its reads will be
+  randomly subsampled to this much coverage. This helps to reduce downstream memory and
+  CPU usage. If you don't want subsampling, just set this to a very high number.
 
 Run
 ===
