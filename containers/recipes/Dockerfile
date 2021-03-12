@@ -35,20 +35,27 @@ RUN python3 -m pip install --no-cache-dir -U pip \
             nanostat=="$NANOSTAT_VERSION" \
             pistis=="$PISTIS_VERSION"
 
+ARG RASUSA_VERSION="0.3.0"
+ARG RASUSA_URL="https://github.com/mbhall88/rasusa/releases/download/${RASUSA_VERSION}/rasusa-${RASUSA_VERSION}-x86_64-unknown-linux-musl.tar.gz"
+RUN wget "$RASUSA_URL" -O - | tar -xz && mv rasusa* /usr/bin/rasusa
+
 ARG MYKROBE_VERSION="0.9.0"
 ARG MYKROBE_URL="https://github.com/Mykrobe-tools/mykrobe/archive/v${MYKROBE_VERSION}.tar.gz"
+ARG MCCORTEX_GIT="https://github.com/phelimb/mccortex"
 WORKDIR /
 RUN wget "$MYKROBE_URL" -O mykrobe.tar.gz \
     && tar -xzf mykrobe.tar.gz \
     && rm mykrobe.tar.gz \
     && cd mykrobe* \
+    && git clone --recursive -b geno_kmer_count "$MCCORTEX_GIT" mccortex \
+    && cd mccortex \
+    && make MAXK=31 \
+    && cp bin/mccortex31 ../src/mykrobe/cortex/ \
+    && cd ../ \
+    && rm -rf mccortex \
     && python3 -m pip install --no-cache-dir . \
     && mykrobe panels update_metadata \
     && mykrobe panels update_species all
-
-ARG RASUSA_VERSION="0.3.0"
-ARG RASUSA_URL="https://github.com/mbhall88/rasusa/releases/download/${RASUSA_VERSION}/rasusa-${RASUSA_VERSION}-x86_64-unknown-linux-musl.tar.gz"
-RUN wget "$RASUSA_URL" -O - | tar -xz && mv rasusa* /usr/bin/rasusa
 
 RUN apt remove -y make git wget \
     && apt autoremove -y \
