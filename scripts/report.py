@@ -48,10 +48,11 @@ def mykrobe_rst_list(data: dict) -> str:
             result += "- **{drug}**\n    - Prediction: **Susceptible**\n".format(
                 drug=drug
             )
-        elif predict == "R":
+        elif predict.upper() == "R":
             called_by = list(drug_info.get("called_by", []))
-            result += "- **{drug}**\n    - Prediction: **Resistant**\n".format(
-                drug=drug
+            resist_str = "Resistant" if predict.isupper() else "Resistant (minor)"
+            result += "- **{drug}**\n    - Prediction: **{prediction}**\n".format(
+                drug=drug, prediction=resist_str
             )
             for var in called_by:
                 coverage = (
