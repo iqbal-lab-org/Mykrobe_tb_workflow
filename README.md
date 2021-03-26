@@ -220,7 +220,11 @@ To run the pipeline on a local computer (i.e laptop or desktop)
 
 ```shell
 cd "$project_dir"
-snakemake --use-singularity --cores 8
+# set the maximum memory (Gb) available on your computer
+GB=16
+MAX_MEM=$(( GB * 1000 ))
+# run the pipeline
+snakemake --use-singularity --cores 8 --resources mem_mb="$MAX_MEM"
 ```
 
 This will provide a summary of all the jobs that are to be run, and when they have been
