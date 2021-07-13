@@ -7,7 +7,7 @@ rule mykrobe:
         "shallow"
     params:
         species="tb",
-        extra="--ont --format json",
+        extra="--format json --ploidy haploid --expected_error_rate 0.08",
     log:
         "logs/mykrobe/{sample}.log",
     container:
