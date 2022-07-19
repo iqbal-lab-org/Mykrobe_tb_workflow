@@ -35,4 +35,11 @@ rule combine_barcode_fastqs:
     log:
         "logs/combine_barcode_fastqs/{sample}.log",
     shell:
-        "cat {input.demux_dir}/pass/{params.barcode_dir}/*.fastq* > {output.fastq} 2> {log}"
+        """
+        if [ -d {input.demux_dir}/pass ]; then
+            indir={input.demux_dir}/pass/{params.barcode_dir}
+        else
+            indir={input.demux_dir}/{params.barcode_dir}
+        fi
+        cat "$indir"/*.fastq* > {output.fastq} 2> {log}
+        """
