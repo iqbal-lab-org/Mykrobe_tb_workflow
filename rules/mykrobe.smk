@@ -7,7 +7,7 @@ rule mykrobe:
         "shallow"
     params:
         species="tb",
-        extra="--format json --ploidy haploid --expected_error_rate 0.08",
+        extra="--format json --ont",
     log:
         "logs/mykrobe/{sample}.log",
     container:
@@ -15,5 +15,5 @@ rule mykrobe:
     shell:
         """
         mykrobe predict {params.extra} --seq {input.reads} --output {output.report} \
-          {wildcards.sample} {params.species} > {log} 2>&1
+          --sample {wildcards.sample} --species {params.species} > {log} 2>&1
         """
