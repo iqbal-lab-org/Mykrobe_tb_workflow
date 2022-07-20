@@ -39,7 +39,7 @@ RUN python3 -m pip install --no-cache-dir -U pip \
 
 ARG RASUSA_VERSION="0.7.0"
 ARG RASUSA_URL="https://github.com/mbhall88/rasusa/releases/download/${RASUSA_VERSION}/rasusa-${RASUSA_VERSION}-x86_64-unknown-linux-musl.tar.gz"
-RUN wget "$RASUSA_URL" -O - | tar -xz && mv rasusa* /usr/bin/rasusa
+RUN wget "$RASUSA_URL" -O - | tar -xz && mv rasusa*/rasusa /usr/bin/rasusa
 
 ARG MYKROBE_VERSION="0.12.1"
 ARG MYKROBE_URL="https://github.com/Mykrobe-tools/mykrobe/archive/v${MYKROBE_VERSION}.tar.gz"
